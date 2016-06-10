@@ -1,18 +1,11 @@
-﻿@model dynamic
-
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "Home Page";
 }
 
-<!DOCTYPE html>
+<hr />
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<div class="row">
+    <span class="panel-body">Authentication type: @ViewBag.AuthType</span>
+    <span class="panel-body">Your login: @ViewBag.Login</span>
+    <span class="panel-body">@ViewBag.IsAdminInRole</span>
 </div>
-</body>
-</html>

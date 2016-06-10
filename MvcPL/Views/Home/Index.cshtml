@@ -1,18 +1,39 @@
-﻿@model System.Collections.Generic.IEnumerable<MvcPL.Models.UserViewModel>
+﻿@model IEnumerable<MvcPL.Models.UserViewModel>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Index";
 }
 
-<!DOCTYPE html>
+<h2>All users</h2>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
-</div>
-</body>
-</html>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+<p>
+    @Html.ActionLink("Add new user", "Register")
+</p>

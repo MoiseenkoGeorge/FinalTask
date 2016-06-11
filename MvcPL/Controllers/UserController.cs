@@ -25,6 +25,15 @@ namespace MvcPL.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisterViewModel registerViewModel)
+        {
+
+            return View();
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -67,13 +76,6 @@ namespace MvcPL.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "User");
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(UserViewModel userViewModel)
-        {
-            service.CreateUser(userViewModel.ToBllUser());
-            return RedirectToAction("Index");
         }
 
         //GET-запрос к методу Delete несет потенциальную уязвимость!

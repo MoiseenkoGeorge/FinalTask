@@ -8,32 +8,34 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Role)
+            @Html.DisplayNameFor(model => model.Role.ToString())
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailConfirmed.ToString())
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.Role)
+                @Html.DisplayTextFor(modelItem => item.Role.ToString())
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Role.ToString())
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <!--Html.ActionLink("Delete", "Delete", new { id = item.Id })-->
             </td>
         </tr>
     }
 </table>
 
-<p>
-    @Html.ActionLink("Add new user", "Create")
-</p>

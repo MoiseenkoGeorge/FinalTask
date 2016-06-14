@@ -9,14 +9,13 @@ using ORM;
 
 namespace DAL.Concrete
 {
-    class RoleRepository : IRoleRepository
+    public class RoleRepository : IRoleRepository
     {
         private readonly EntityModel _context = new EntityModel();
         public IEnumerable<DalRole> GetAllRoles()
         {
             return _context.Set<Role>().Select(role => new DalRole()
             {
-                Description = role.Description,
                 Id = role.Id,
                 Name =  role.Name
             });
@@ -33,8 +32,7 @@ namespace DAL.Concrete
             if (ormRole == null)
                 throw new NullReferenceException();
             return new DalRole()
-            {
-                Description = ormRole.Description,
+            { 
                 Id = ormRole.Id,
                 Name = ormRole.Name
             };

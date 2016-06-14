@@ -6,6 +6,7 @@ using BLL.Interface.Entities;
 using BLL.Interface.Services;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
+using MvcPL.Providers;
 
 namespace MvcPL.Controllers
 {
@@ -13,12 +14,24 @@ namespace MvcPL.Controllers
     public class UserController : Controller
     {
         private readonly IUserService service;
-
-        public UserController(IUserService service)
+        private readonly CustomMembershipProvider provider;
+        public UserController(IUserService service,CustomMembershipProvider provider)
         {
             this.service = service;
+            this.provider = provider;
         }
 
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(UserViewModel userViewModel)
+        {
+            return RedirectToAction("Index","Home");
+        }
         [HttpGet]
         public ActionResult Register()
         {
@@ -26,12 +39,23 @@ namespace MvcPL.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel registerViewModel)
         {
-
-            return View();
+            if(ModelState.IsValid)
+            {
+                var membershipUser = provider.CreateUser(registerViewModel);
+                if (membershipUser != null)
+                {
+                    FormsAuthentication.SetAuthCookie(registerViewModel.Email, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "User with the same email has registred yet");
+                }
+            }
+            return View(registerViewModel);
         }
 
         [AllowAnonymous]
@@ -87,7 +111,8 @@ namespace MvcPL.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user.ToMvcUser());
+            return View();
+            //return View(user.ToMvcUser());
         }
 
         //Post/Redirect/Get (PRG) — модель поведения веб-приложений, используемая

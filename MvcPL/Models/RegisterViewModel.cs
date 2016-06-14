@@ -13,7 +13,7 @@ namespace MvcPL.Models
 
         [Display(Name = "Enter your e-mail")]
         [Required(ErrorMessage = "The field can not be empty!")]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.EmailAddress,ErrorMessage = "Incorrect Email")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Enter your password")]
@@ -27,5 +27,6 @@ namespace MvcPL.Models
         [Display(Name = "Confirm the password")]
         [Compare("Password", ErrorMessage = "Passwords must match")]
         public string ConfirmPassword { get; set; }
+        public Role Role { get; set; }
     }
 }

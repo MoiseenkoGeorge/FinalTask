@@ -9,7 +9,7 @@ namespace MvcPL.Infrastructure
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {
-        private IKernel kernel;
+        private readonly IKernel kernel;
 
         public NinjectDependencyResolver(IKernel kernel)
         {

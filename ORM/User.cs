@@ -8,9 +8,6 @@ namespace ORM
 
     public partial class User
     {
-        public User()
-        {
-        }
         public int Id { get; set; }
         [Required]
         public string Email { get; set; }

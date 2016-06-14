@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
 using BLL.Interface.Services;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
+using MvcPL.Providers;
 
 namespace MvcPL.Controllers
 {
@@ -14,23 +16,16 @@ namespace MvcPL.Controllers
     {
 
         private readonly IUserService service;
-
-        public HomeController(IUserService service)
+        private readonly CustomMembershipProvider provider;
+        public HomeController(IUserService service,CustomMembershipProvider provider)
         {
             this.service = service;
+            this.provider = provider;
         }
 
         public ActionResult Index()
         {
-            //service.GetAllUserEntities().Select(user => user.ToMvcUser());
-            //var model = _repository.GetAllUsers().Select(u => new UserViewModel()
-            //{
-            //    Email = u.Email,
-            //    CreationDate = u.CreationDate,
-            //    Role = u.Role.Name
-            //});
-
-            return View(service.GetAllUserEntities().Select(user => user.ToMvcUser()));
+            return View(provider.GetAllUsers());
         }
 
         public ActionResult About()
@@ -59,6 +54,7 @@ namespace MvcPL.Controllers
         //    return System.Web.UI.WebControls.View(model);
         //}
     //}
+
         public ActionResult ProfileEdit()
         {
             throw new NotImplementedException();

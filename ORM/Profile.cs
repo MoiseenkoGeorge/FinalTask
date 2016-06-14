@@ -8,7 +8,7 @@ namespace ORM
     {
         public Profile()
         {
-                Areas= new HashSet<Area>();
+            Areas = new HashSet<Area>();
         }
         public int Id { get; set; }
         [Required]

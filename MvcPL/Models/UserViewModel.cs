@@ -8,17 +8,16 @@ namespace MvcPL.Models
 {
     public enum Role
     {
-        Manager = 1,
+        Administrator=1,
+        User,
+        Manager,
         Programmist
     }
 
     public class UserViewModel
     {
-        public int Id { get; set; }
-
         public string Email { get; set; }
-        public string Password { get; set; }
-        public bool EmailConfiremed { get; set; }
+        public bool EmailConfirmed { get; set; }
         public Role Role { get; set; }
     }
 }

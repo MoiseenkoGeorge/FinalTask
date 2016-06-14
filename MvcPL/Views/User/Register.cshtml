@@ -1,4 +1,5 @@
-﻿@model MvcPL.Models.RegisterViewModel
+﻿@using MvcPL.Models
+@model MvcPL.Models.RegisterViewModel
 
 @{
     ViewBag.Title = "Register";
@@ -31,10 +32,14 @@
             @Html.ValidationMessageFor(m => m.ConfirmPassword, null, new {@class = "text-danger"})
         </div>
     </div>
-
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.HiddenFor(m => m.Role,new {@Value = Enum.GetNames(typeof (Role))[1]})
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-success" value="Register" />
         </div>
     </div>
 }

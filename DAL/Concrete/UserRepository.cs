@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using DAL.Interface.DTO;
 using DAL.Interface.Repository;
+using DAL.Mappers;
 using ORM;
 
 namespace DAL.Concrete
@@ -22,60 +24,41 @@ namespace DAL.Concrete
         public IEnumerable<DalUser> GetAll()
         {
             return context.Set<User>().Select(user => new DalUser()
-                        {
-                            Id = user.Id,
-                            RoleId = user.RoleId,
-                            Email = user.Email,
-                            EmailConfirmed = user.EmailConfirmed,
-                            Password = user.Password
-                            
-                        });
+            {
+                Id = user.Id,
+                RoleId = user.RoleId,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                Password = user.Password
+            });
         }
 
         public DalUser GetById(int key)
         {
-            var ormuser = context.Set<User>().FirstOrDefault(user => user.Id == key);
-            return new DalUser()
-            {
-                Id = ormuser.Id,
-                RoleId = ormuser.RoleId,
-                Email = ormuser.Email,
-                EmailConfirmed = ormuser.EmailConfirmed,
-                Password = ormuser.Password
-
-            };
+            return context.Set<User>().FirstOrDefault(user => user.Id == key).ToDalUser();
         }
 
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> f)
         {
             //Expression<Func<DalUser, bool>> -> Expression<Func<User, bool>> (!)
-            throw new NotImplementedException();
+            return context.Set<User>().Select(user => new DalUser()
+            {
+                Id = user.Id,
+                RoleId = user.RoleId,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                Password = user.Password
+            }).SingleOrDefault(f);
         }
 
         public void Create(DalUser e)
         {
-            var user = new User()
-            {
-                Id = e.Id,
-                RoleId = e.RoleId,
-                Email = e.Email,
-                EmailConfirmed = e.EmailConfirmed,
-                Password = e.Password
-            };
-            context.Set<User>().Add(user);
+            context.Set<User>().Add(e.ToUser());
         }
 
         public void Delete(DalUser e)
         {
-            var user = new User()
-            {
-                Id = e.Id,
-                RoleId = e.RoleId,
-                Email = e.Email,
-                EmailConfirmed = e.EmailConfirmed,
-                Password = e.Password
-            };
-            user = context.Set<User>().Single(u => u.Id == user.Id);
+            var user = context.Set<User>().Single(u => u.Id == e.Id);
             context.Set<User>().Remove(user);
         }
 

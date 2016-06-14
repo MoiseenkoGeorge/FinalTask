@@ -14,41 +14,48 @@ namespace MvcPL.Providers
 {
     public class CustomMembershipProvider : MembershipProvider
     {
-        public IUserRepository UserRepository { get; private set; }
-        public IRoleRepository RoleRepository { get; private set; }
 
         private readonly IUserService service;
 
-        public CustomMembershipProvider(IUserRepository userRepository,IRoleRepository roleRepository,IUserService service)
+        public CustomMembershipProvider(IUserService service)
         {
-            UserRepository = userRepository;
-            RoleRepository = roleRepository;
             this.service = service;
         }
-
-        public MembershipUser CreateUser(UserViewModel userViewModel)
+        public MembershipUser CreateUser(RegisterViewModel registerViewModel)
         {
 
-            MembershipUser membershipUser = GetUser(userViewModel.Email, false);
+            MembershipUser membershipUser = GetUser(registerViewModel.Email, false);
 
             if (membershipUser != null)
             {
                 return null;
             }
 
-
-            //var user = new User
-            //{
-            //    Email = email,
-            //    Password = Crypto.HashPassword(password),
-            //    //http://msdn.microsoft.com/ru-ru/library/system.web.helpers.crypto(v=vs.111).aspx
-            //    CreationDate = DateTime.Now
-            //};
-
-            service.CreateUser(userViewModel.ToBllUser());
-            membershipUser = GetUser(userViewModel.Email, false);
+            service.CreateUser(registerViewModel.ToBllUser());
+            membershipUser = GetUser(registerViewModel.Email, false);
             return membershipUser;
         }
+
+        public override MembershipUser GetUser(string email, bool userIsOnline)
+        {
+            var user = service.GetUserByEmail(email);
+
+            if (user == null) return null;
+
+            var memberUser = new MembershipUser("CustomMembershipProvider", user.Email,
+                null, user.Email, null, null,
+                false, false, DateTime.MinValue,
+                DateTime.MinValue, DateTime.MinValue,
+                DateTime.MinValue, DateTime.MinValue);
+
+            return memberUser;
+        }
+
+        public IEnumerable<UserViewModel> GetAllUsers()
+        {
+            return service.GetAllUserEntities().Select(user => user.ToUserView());
+        }
+
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer,
             bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
@@ -92,11 +99,6 @@ namespace MvcPL.Providers
         }
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             throw new NotImplementedException();
         }

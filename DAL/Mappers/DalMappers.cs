@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Interface.DTO;
+using DAL.Interfacies.DTO;
 using ORM;
 
 namespace DAL.Mappers
@@ -33,5 +34,30 @@ namespace DAL.Mappers
             };
         }
 
+        public static DalProfile ToDalProfile(this Profile profile)
+        {
+            return new DalProfile()
+            {
+                Id = profile.Id,
+                Age = profile.Age,
+                ImageUrl = profile.ImageUrl,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                UserId = profile.UserId
+            };
+        }
+
+        public static Profile ToProfile(this DalProfile dalProfile)
+        {
+            return new Profile()
+            {
+                Id = dalProfile.Id,
+                Age = dalProfile.Age,
+                ImageUrl = dalProfile.ImageUrl,
+                FirstName = dalProfile.FirstName,
+                LastName = dalProfile.LastName,
+                UserId = dalProfile.UserId
+            };
+        }
     }
 }

@@ -22,17 +22,6 @@ namespace MvcPL.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(UserViewModel userViewModel)
-        {
-            return RedirectToAction("Index","Home");
-        }
-        [HttpGet]
         public ActionResult Register()
         {
             return View();
@@ -50,10 +39,7 @@ namespace MvcPL.Controllers
                     FormsAuthentication.SetAuthCookie(registerViewModel.Email, false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "User with the same email has registred yet");
-                }
+                ModelState.AddModelError("", "User with the same email has registred yet");
             }
             return View(registerViewModel);
         }
@@ -68,13 +54,12 @@ namespace MvcPL.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LogOnViewModel viewModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(viewModel.Email, viewModel.Password))
+                if (provider.ValidateUser(viewModel.Email, viewModel.Password))
                 //Проверяет учетные данные пользователя и управляет параметрами пользователей
                 {
                     FormsAuthentication.SetAuthCookie(viewModel.Email, viewModel.RememberMe);
@@ -83,10 +68,7 @@ namespace MvcPL.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

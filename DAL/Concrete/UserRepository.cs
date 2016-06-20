@@ -58,8 +58,9 @@ namespace DAL.Concrete
 
         public void Delete(DalUser e)
         {
-            var user = context.Set<User>().Single(u => u.Id == e.Id);
-            context.Set<User>().Remove(user);
+            var user = context.Set<User>().SingleOrDefault(u => u.Id == e.Id);
+            if(user != default(User))
+                context.Set<User>().Remove(user);
         }
 
         public void Update(DalUser entity)

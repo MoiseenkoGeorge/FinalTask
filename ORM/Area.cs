@@ -7,13 +7,13 @@ namespace ORM
     {
         public Area()
         {
-            Users = new HashSet<User>();
+            ProfileAreas = new HashSet<ProfileArea>();
         }
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ProfileArea> ProfileAreas { get; set; }
     }
 }

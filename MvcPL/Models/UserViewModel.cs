@@ -16,8 +16,11 @@ namespace MvcPL.Models
 
     public class UserViewModel
     {
+        [Display(Name = "User's e-mail")]
         public string Email { get; set; }
+        [Display(Name = "User's confirmation of e-mail")]
         public bool EmailConfirmed { get; set; }
+        [Display(Name = "User's Role")]
         public Role Role { get; set; }
     }
 }

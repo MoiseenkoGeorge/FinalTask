@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Providers.Entities;
 using System.Web.Security;
+using System.Web.Mvc;
 using BLL.Interface.Services;
 using DAL.Interface.Repository;
 using DependencyResolver;
@@ -21,6 +23,7 @@ namespace MvcPL.Providers
         {
             this.service = service;
         }
+
         public MembershipUser CreateUser(RegisterViewModel registerViewModel)
         {
 
@@ -42,20 +45,24 @@ namespace MvcPL.Providers
 
             if (user == null) return null;
 
-            var memberUser = new MembershipUser("CustomMembershipProvider", user.Email,
+            return new MembershipUser("CustomMembershipProvider", user.Email,
                 null, user.Email, null, null,
                 false, false, DateTime.MinValue,
                 DateTime.MinValue, DateTime.MinValue,
                 DateTime.MinValue, DateTime.MinValue);
-
-            return memberUser;
         }
 
         public IEnumerable<UserViewModel> GetAllUsers()
         {
             return service.GetAllUserEntities().Select(user => user.ToUserView());
         }
+        public override bool ValidateUser(string email, string password)
+        {
+            var user = service.GetUserByEmail(email);
+            return user != null && Crypto.VerifyHashedPassword(user.Password, password);
+        }
 
+        #region stabs
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer,
             bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
@@ -88,10 +95,6 @@ namespace MvcPL.Providers
             throw new NotImplementedException();
         }
 
-        public override bool ValidateUser(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
 
         public override bool UnlockUser(string userName)
         {
@@ -144,5 +147,6 @@ namespace MvcPL.Providers
         public override int MinRequiredPasswordLength { get; }
         public override int MinRequiredNonAlphanumericCharacters { get; }
         public override string PasswordStrengthRegularExpression { get; }
+#endregion
     }
 }

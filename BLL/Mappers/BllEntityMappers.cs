@@ -1,5 +1,7 @@
 ﻿using BLL.Interface.Entities;
+using BLL.Interfacies.Entities;
 using DAL.Interface.DTO;
+using DAL.Interfacies.DTO;
 
 namespace BLL.Mappers
 {
@@ -44,6 +46,32 @@ namespace BLL.Mappers
             {
                 Id = roleEntity.Id,
                 Name = roleEntity.Name
+            };
+        }
+
+        public static ProfileEntity ToBllProfile(this DalProfile dalProfile)
+        {
+            return new ProfileEntity()
+            {
+                Id = dalProfile.Id,
+                ImageUrl = dalProfile.ImageUrl,
+                FirstName = dalProfile.FirstName,
+                LastName = dalProfile.LastName,
+                Age = dalProfile.Age,
+                UserId = dalProfile.UserId
+            };
+        }
+
+        public static DalProfile ToDalProfile(this ProfileEntity profileEntity)
+        {
+            return new DalProfile()
+            {
+                Id = profileEntity.Id,
+                ImageUrl = profileEntity.ImageUrl,
+                FirstName = profileEntity.FirstName,
+                LastName = profileEntity.LastName,
+                Age = profileEntity.Age,
+                UserId = profileEntity.UserId
             };
         }
     }

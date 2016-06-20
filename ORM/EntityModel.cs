@@ -13,6 +13,7 @@ namespace ORM
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Area> Areas { get; set; }
         public virtual DbSet<Profile> Profiles { get; set; } 
+        public virtual DbSet<ProfileArea> ProfileAreas { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

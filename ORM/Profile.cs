@@ -8,9 +8,10 @@ namespace ORM
     {
         public Profile()
         {
-            Areas = new HashSet<Area>();
+            ProfileAreas = new HashSet<ProfileArea>();
         }
         public int Id { get; set; }
+        public string ImageUrl { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -21,6 +22,6 @@ namespace ORM
         public int UserId { get; set; }
 
         public virtual User User { get; set; }
-        public virtual ICollection<Area> Areas { get; set; }
+        public virtual ICollection<ProfileArea> ProfileAreas { get; set; }
     }
 }

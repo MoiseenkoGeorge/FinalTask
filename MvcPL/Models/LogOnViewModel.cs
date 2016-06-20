@@ -10,7 +10,7 @@ namespace MvcPL.Models
     {
         [Required(ErrorMessage = "The field can not be empty!")]
         [Display(Name = "Enter your e-mail")]
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Incorrect address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "The field can not be empty!")]

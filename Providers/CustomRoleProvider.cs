@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Security;
 using BLL.Interface.Services;
 using BLL.Interfacies.Services;
 
-namespace MvcPL.Providers
+namespace Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
@@ -19,39 +22,37 @@ namespace MvcPL.Providers
         public override bool IsUserInRole(string email, string roleName)
         {
             // Получаем пользователя
-            //var user = userService.GetUserByEmail(email);
-            //if (user != null)
-            //{
-            //    // получаем роль
-            //    var userRole = roleService.GetRoleEntity(user.RoleId);
+            var user = userService.GetUserByEmail(email);
+            if (user != null)
+            {
+                // получаем роль
+                var userRole = roleService.GetRoleEntity(user.RoleId);
 
-            //    //сравниваем
-            //    if (userRole != null && userRole.Name == roleName)
-            //    {
-            //        return true;
-            //    }
-            //}
-            //return false;
-            throw new NotImplementedException();
+                //сравниваем
+                if (userRole != null && userRole.Name == roleName)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override string[] GetRolesForUser(string email)
         {
-            //string[] role = new string[] { };
-            //// Получаем пользователя
-            //var user = userService.GetUserByEmail(email);
-            //if (user != null)
-            //{
-            //    // получаем роль
-            //    var userRole = roleService.GetRoleEntity(user.RoleId);
+            string[] role = new string[] { };
+            // Получаем пользователя
+            var user = userService.GetUserByEmail(email);
+            if (user != null)
+            {
+                // получаем роль
+                var userRole = roleService.GetRoleEntity(user.RoleId);
 
-            //    if (userRole != null)
-            //    {
-            //        role = new[] { userRole.Name };
-            //    }
-            //}
-            //return role;
-            throw new NotImplementedException();
+                if (userRole != null)
+                {
+                    role = new[] { userRole.Name };
+                }
+            }
+            return role;
         }
         #region stabs
 

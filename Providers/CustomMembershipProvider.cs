@@ -20,10 +20,7 @@ namespace MvcPL.Providers
         {
             this.service = service;
         }
-        public CustomMembershipProvider()
-        {
-                
-        }
+
         public MembershipUser CreateUser(RegisterViewModel registerViewModel)
         {
 

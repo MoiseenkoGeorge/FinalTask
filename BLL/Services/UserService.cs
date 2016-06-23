@@ -7,6 +7,7 @@ using BLL.Mappers;
 using DAL.Interface.Repository;
 using System.Web.Helpers;
 using System;
+using DAL.Interfacies.DTO;
 
 namespace BLL.Services
 {
@@ -15,11 +16,13 @@ namespace BLL.Services
         private readonly IUnitOfWork uow;
         private readonly IUserRepository userRepository;
         private readonly IRoleRepository roleRepository;
-        public UserService(IUnitOfWork uow, IUserRepository repository,IRoleRepository roleRepository)
+        private readonly IProfileRepository profileRepository;
+        public UserService(IUnitOfWork uow, IUserRepository repository,IRoleRepository roleRepository,IProfileRepository profileRepository)
         {
             this.uow = uow;
             this.userRepository = repository;
             this.roleRepository = roleRepository;
+            this.profileRepository = profileRepository;
         }
 
         public UserEntity GetUserEntity(int id)
@@ -34,10 +37,14 @@ namespace BLL.Services
 
         public void CreateUser(UserEntity user)
         {
-            var roleEntity = roleRepository.GetById(user.RoleId).ToBllRole();
-            user.RoleId = roleEntity.Id;
+            var role = roleRepository.GetById(user.RoleEntities.ToList()[0].Id).ToBllRole();
+            user.RoleEntities = new HashSet<RoleEntity>();
             user.Password = Crypto.HashPassword(user.Password);
             userRepository.Create(user.ToDalUser());
+            uow.Commit();
+            var dalUser = userRepository.GetByPredicate(x => x.Email == user.Email);
+            userRepository.AddRoleToUser(role.ToDalRole(), dalUser);
+            profileRepository.Create(new DalProfile() {UserId = dalUser.Id});
             uow.Commit();
         }
 

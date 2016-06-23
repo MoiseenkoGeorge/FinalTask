@@ -12,7 +12,9 @@ namespace BLL.Interfacies.Entities
         public string ImageUrl { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Description { get; set; }
         public int UserId { get; set; }
-        public DateTime Age { get; set; }
+        public DateTime? Age { get; set; }
+        public IEnumerable<AreaEntity> AreaEntities { get; set; } 
     }
 }

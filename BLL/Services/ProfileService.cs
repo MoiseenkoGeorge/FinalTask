@@ -7,7 +7,6 @@ using BLL.Interfacies.Entities;
 using BLL.Interfacies.Services;
 using BLL.Mappers;
 using DAL.Interface.Repository;
-using DAL.Interfacies.Repository;
 
 namespace BLL.Services
 {
@@ -40,14 +39,21 @@ namespace BLL.Services
             });
         }
 
+        public ProfileEntity GetProfileByUserId(int userId)
+        {
+            var profile = profileRepository.GetByPredicate(x => x.UserId == userId);
+            return profile?.ToBllProfile();
+        }
         public void CreateProfile(ProfileEntity profile)
         {
-            throw new NotImplementedException();
+            profileRepository.Create(profile.ToDalProfile());
+            uow.Commit();
         }
 
         public void DeleteProfile(ProfileEntity profile)
         {
-            throw new NotImplementedException();
+            profileRepository.Delete(profile.ToDalProfile());
+            uow.Commit();
         }
     }
 }

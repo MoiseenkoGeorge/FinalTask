@@ -1,4 +1,5 @@
-﻿using BLL.Interface.Entities;
+﻿using System.Linq;
+using BLL.Interface.Entities;
 using BLL.Interfacies.Entities;
 using DAL.Interface.DTO;
 using DAL.Interfacies.DTO;
@@ -12,10 +13,10 @@ namespace BLL.Mappers
             return new DalUser()
             {
                 Id = userEntity.Id,
-                RoleId = userEntity.RoleId,
                 Email = userEntity.Email,
                 EmailConfirmed = userEntity.EmailConfirmed,
-                Password = userEntity.Password
+                Password = userEntity.Password,
+                DalRoles = userEntity.RoleEntities?.Select(roleEntity => roleEntity.ToDalRole())
             };
         }
 
@@ -24,10 +25,10 @@ namespace BLL.Mappers
             return new UserEntity()
             {
                 Id = dalUser.Id,
-                RoleId = dalUser.RoleId,
                 Email = dalUser.Email,
                 EmailConfirmed = dalUser.EmailConfirmed,
                 Password = dalUser.Password,
+                RoleEntities = dalUser.DalRoles.Select( dalRole => dalRole.ToBllRole())
             };
         }
 
@@ -58,7 +59,9 @@ namespace BLL.Mappers
                 FirstName = dalProfile.FirstName,
                 LastName = dalProfile.LastName,
                 Age = dalProfile.Age,
-                UserId = dalProfile.UserId
+                UserId = dalProfile.UserId,
+                Description = dalProfile.Description,
+                AreaEntities = dalProfile.DalAreas.Select( dalArea => dalArea.ToBllArea())
             };
         }
 
@@ -71,7 +74,29 @@ namespace BLL.Mappers
                 FirstName = profileEntity.FirstName,
                 LastName = profileEntity.LastName,
                 Age = profileEntity.Age,
-                UserId = profileEntity.UserId
+                UserId = profileEntity.UserId,
+                Description = profileEntity.Description,
+                DalAreas = profileEntity.AreaEntities.Select(areaEntity => areaEntity.ToDalArea())
+            };
+        }
+
+        public static AreaEntity ToBllArea(this DalArea dalArea)
+        {
+            return new AreaEntity()
+            {
+                Id = dalArea.Id,
+                Name = dalArea.Name,
+                ProfileEntities = dalArea.DalProfiles.Select( dalProfile => dalProfile.ToBllProfile())
+            };
+        }
+
+        public static DalArea ToDalArea(this AreaEntity areaEntity)
+        {
+            return new DalArea()
+            {
+                Id = areaEntity.Id,
+                Name = areaEntity.Name,
+                DalProfiles = areaEntity.ProfileEntities.Select( profileEntity => profileEntity.ToDalProfile())
             };
         }
     }

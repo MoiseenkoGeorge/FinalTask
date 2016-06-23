@@ -14,58 +14,94 @@ namespace DAL.Concrete
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DbContext context;
+        private readonly DbContext _context;
 
         public UserRepository(DbContext uow)
         {
-            this.context = uow;
+            _context = uow;
         }
 
         public IEnumerable<DalUser> GetAll()
         {
-            return context.Set<User>().Select(user => new DalUser()
+            return _context.Set<User>().Select(user => new DalUser()
             {
                 Id = user.Id,
-                RoleId = user.RoleId,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
-                Password = user.Password
+                Password = user.Password,
+                DalRoles = user.Roles.Select(role => new DalRole()
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                })
             });
         }
 
         public DalUser GetById(int key)
         {
-            return context.Set<User>().FirstOrDefault(user => user.Id == key).ToDalUser();
+            return _context.Set<User>().FirstOrDefault(user => user.Id == key).ToDalUser();
         }
 
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> f)
         {
             //Expression<Func<DalUser, bool>> -> Expression<Func<User, bool>> (!)
-            return context.Set<User>().Select(user => new DalUser()
+            return _context.Set<User>().Select(user => new DalUser()
             {
                 Id = user.Id,
-                RoleId = user.RoleId,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
-                Password = user.Password
+                Password = user.Password,
+                DalRoles = user.Roles.Select(role => new DalRole()
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                })
             }).SingleOrDefault(f);
         }
 
         public void Create(DalUser e)
         {
-            context.Set<User>().Add(e.ToUser());
+            _context.Set<User>().Add(e.ToUser());
         }
 
         public void Delete(DalUser e)
         {
-            var user = context.Set<User>().SingleOrDefault(u => u.Id == e.Id);
+            var user = _context.Set<User>().SingleOrDefault(u => u.Id == e.Id);
             if(user != default(User))
-                context.Set<User>().Remove(user);
+                _context.Set<User>().Remove(user);
         }
 
         public void Update(DalUser entity)
         {
-            throw new NotImplementedException();
+            User user = entity.ToUser();
+
+            User localUser = _context.Set<User>().Local.FirstOrDefault(u => u.Id == user.Id);
+            if (localUser != null)
+            {
+                _context.Entry(localUser).CurrentValues.SetValues(user);
+            }
+            else
+            {
+                _context.Set<User>().Attach(user);
+                _context.Entry(user).State = EntityState.Modified;
+            }
+        }
+
+        public void AddRoleToUser(DalRole dalRole, DalUser dalUser)
+        {
+            var user = dalUser.ToUser();
+            var role = dalRole.ToRole();
+
+            if (user.Roles.Contains(role))
+                return;
+            user = _context.Set<User>().Local.FirstOrDefault(u => u.Id == user.Id) ?? user;
+            role = _context.Set<Role>().Local.FirstOrDefault(r => r.Id == role.Id) ?? role;
+
+            _context.Set<User>().Attach(user);
+            _context.Set<Role>().Attach(role);
+
+            _context.Entry(user).Collection(x => x.Roles).Load();
+            user.Roles.Add(role);
         }
     }
 }

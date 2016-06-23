@@ -1,6 +1,9 @@
 namespace ORM
 {
+    using System;
     using System.Data.Entity;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     public partial class EntityModel : DbContext
     {
@@ -9,18 +12,22 @@ namespace ORM
         {
         }
 
+        public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<Profile> Profiles { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Area> Areas { get; set; }
-        public virtual DbSet<Profile> Profiles { get; set; } 
-        public virtual DbSet<ProfileArea> ProfileAreas { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Profile>()
+                .HasMany(e => e.Areas)
+                .WithMany(e => e.Profiles)
+                .Map(m => m.ToTable("ProfileAreas").MapLeftKey("ProfileId").MapRightKey("AreaId"));
+
             modelBuilder.Entity<Role>()
                 .HasMany(e => e.Users)
-                .WithRequired(e => e.Role)
-                .WillCascadeOnDelete(false);
+                .WithMany(e => e.Roles)
+                .Map(m => m.ToTable("UserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
         }
     }
 }

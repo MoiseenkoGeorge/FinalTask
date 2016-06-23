@@ -73,10 +73,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\DalArea.cs" />
     <Compile Include="DTO\DalProfile.cs" />
     <Compile Include="DTO\DalRole.cs" />
     <Compile Include="DTO\DalUser.cs" />
     <Compile Include="DTO\IEntity.cs" />
+    <Compile Include="Repository\IAreaRepository.cs" />
     <Compile Include="Repository\IProfileRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\IRoleRepository.cs" />

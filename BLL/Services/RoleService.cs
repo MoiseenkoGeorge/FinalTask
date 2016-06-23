@@ -27,7 +27,7 @@ namespace BLL.Services
 
         public IEnumerable<RoleEntity> GetAllRoleEntities()
         {
-            return roleRepository.GetAllRoles().Select(dalRole => dalRole.ToBllRole());
+            return roleRepository.GetAll().Select(dalRole => dalRole.ToBllRole());
         }
 
         public void CreateRole(RoleEntity role)

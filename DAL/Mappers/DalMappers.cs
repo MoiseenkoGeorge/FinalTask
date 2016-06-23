@@ -16,10 +16,10 @@ namespace DAL.Mappers
             return new DalUser()
             {
                 Id = user.Id,
-                RoleId = user.RoleId,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
-                Password = user.Password
+                Password = user.Password,
+                DalRoles = user.Roles.Select(role => role.ToDalRole())
             };
         }
         public static User ToUser(this DalUser dalUser)
@@ -30,10 +30,29 @@ namespace DAL.Mappers
                 Email = dalUser.Email,
                 EmailConfirmed = dalUser.EmailConfirmed,
                 Password = dalUser.Password,
-                RoleId = dalUser.RoleId
+                Roles = dalUser.DalRoles?.Select(dalRole => dalRole.ToRole()).ToList()
+            };
+        }
+        #region Role
+        public static DalRole ToDalRole(this Role role)
+        {
+            return new DalRole()
+            {
+                Id = role.Id,
+                Name = role.Name,
             };
         }
 
+        public static Role ToRole(this DalRole dalRole)
+        {
+            return new Role()
+            {
+                Id = dalRole.Id,
+                Name = dalRole.Name,
+            };
+        }
+        #endregion
+        #region Profile
         public static DalProfile ToDalProfile(this Profile profile)
         {
             return new DalProfile()
@@ -43,7 +62,9 @@ namespace DAL.Mappers
                 ImageUrl = profile.ImageUrl,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                UserId = profile.UserId
+                UserId = profile.UserId,
+                DalAreas = profile.Areas.Select(area => area.ToDalArea()),
+                Description = profile.Description
             };
         }
 
@@ -56,8 +77,32 @@ namespace DAL.Mappers
                 ImageUrl = dalProfile.ImageUrl,
                 FirstName = dalProfile.FirstName,
                 LastName = dalProfile.LastName,
-                UserId = dalProfile.UserId
+                UserId = dalProfile.UserId,
+                Areas = dalProfile.DalAreas?.Select(dalArea => dalArea.ToArea()).ToList(),
+                Description = dalProfile.Description
             };
         }
+        #endregion
+        #region Area
+        public static DalArea ToDalArea(this Area area)
+        {
+            return new DalArea()
+            {
+                Id = area.Id,
+                Name = area.Name,
+                DalProfiles = area.Profiles.Select(profile => profile.ToDalProfile())
+            };
+        }
+
+        public static Area ToArea(this DalArea dalArea)
+        {
+            return new Area()
+            {
+                Id = dalArea.Id,
+                Name = dalArea.Name,
+                Profiles = (ICollection<Profile>) dalArea.DalProfiles.Select(dalProfile => dalProfile.ToProfile())
+            };
+        }
+        #endregion
     }
 }

@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Interface.DTO;
 using DAL.Interfacies.DTO;
-using DAL.Interfacies.Repository;
 using DAL.Mappers;
+using DAL.Interface.Repository;
 using ORM;
 
 namespace DAL.Concrete
@@ -66,7 +66,18 @@ namespace DAL.Concrete
 
         public void Update(DalProfile entity)
         {
-            throw new NotImplementedException();
+            var profile = entity.ToProfile();
+
+            var localUser = context.Set<Profile>().Local.FirstOrDefault(u => u.Id == profile.Id);
+            if (localUser != null)
+            {
+                context.Entry(localUser).CurrentValues.SetValues(profile);
+            }
+            else
+            {
+                context.Set<Profile>().Attach(profile);
+                context.Entry(profile).State = EntityState.Modified;
+            }
         }
     }
 }

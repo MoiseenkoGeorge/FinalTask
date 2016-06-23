@@ -35,10 +35,12 @@ namespace DependencyResolver
                 kernel.Bind<DbContext>().To<EntityModel>().InSingletonScope();
             }
 
-            kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
             kernel.Bind<IRoleRepository>().To<RoleRepository>();
+            kernel.Bind<IProfileRepository>().To<ProfileRepository>();
+            kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
+            kernel.Bind<IProfileService>().To<ProfileService>();
         }
     }
 }

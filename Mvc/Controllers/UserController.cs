@@ -11,6 +11,8 @@ using BLL.Interfacies.Services;
 using Mvc.Infrastructure.Mappers;
 using Mvc.Models;
 using Mvc.Providers;
+using reCAPTCHA.MVC;
+
 namespace Mvc.Controllers
 {
     [AllowAnonymous]
@@ -34,7 +36,11 @@ namespace Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel registerViewModel)
+        [CaptchaValidator(
+        PrivateKey = "6LeBeiMTAAAAAFjgHaC47HowgAH3rFnUrYH3RvF9",
+        ErrorMessage = "Invalid input captcha.",
+        RequiredMessage = "The captcha field is required.")]
+        public ActionResult Register(RegisterViewModel registerViewModel, bool captchaValid)
         {
             if (ModelState.IsValid)
             {

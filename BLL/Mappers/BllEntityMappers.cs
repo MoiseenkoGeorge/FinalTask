@@ -61,7 +61,7 @@ namespace BLL.Mappers
                 Age = dalProfile.Age,
                 UserId = dalProfile.UserId,
                 Description = dalProfile.Description,
-                AreaEntities = dalProfile.DalAreas.Select( dalArea => dalArea.ToBllArea())
+                AreaEntities = dalProfile.DalAreas?.Select( dalArea => dalArea.ToBllArea())
             };
         }
 
@@ -85,8 +85,7 @@ namespace BLL.Mappers
             return new AreaEntity()
             {
                 Id = dalArea.Id,
-                Name = dalArea.Name,
-                ProfileEntities = dalArea.DalProfiles.Select( dalProfile => dalProfile.ToBllProfile())
+                Name = dalArea.Name
             };
         }
 
@@ -95,8 +94,7 @@ namespace BLL.Mappers
             return new DalArea()
             {
                 Id = areaEntity.Id,
-                Name = areaEntity.Name,
-                DalProfiles = areaEntity.ProfileEntities.Select( profileEntity => profileEntity.ToDalProfile())
+                Name = areaEntity.Name
             };
         }
     }

@@ -1,0 +1,58 @@
+﻿@using Mvc.Models
+@model Mvc.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+@using (var f = Html.Bootstrap().Begin(new Form()))
+{
+   @Html.AntiForgeryToken()
+
+    @f.FormGroup().TextBoxFor(x => x.Email).Placeholder("Enter email")
+    @f.FormGroup().PasswordFor(x => x.Password).Placeholder()
+    @f.FormGroup().PasswordFor(x => x.ConfirmPassword).Placeholder()
+    @Html.Bootstrap().SubmitButton().Text("Register").ButtonBlock().Value("success")
+}
+@*@using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Register</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.HiddenFor(m => m.Role, new { @Value = Enum.GetNames(typeof(Role))[1] })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success" value="Register" />
+        </div>
+    </div>
+}*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

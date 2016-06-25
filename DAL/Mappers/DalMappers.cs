@@ -89,8 +89,7 @@ namespace DAL.Mappers
             return new DalArea()
             {
                 Id = area.Id,
-                Name = area.Name,
-                DalProfiles = area.Profiles.Select(profile => profile.ToDalProfile())
+                Name = area.Name
             };
         }
 
@@ -99,8 +98,7 @@ namespace DAL.Mappers
             return new Area()
             {
                 Id = dalArea.Id,
-                Name = dalArea.Name,
-                Profiles = (ICollection<Profile>) dalArea.DalProfiles.Select(dalProfile => dalProfile.ToProfile())
+                Name = dalArea.Name
             };
         }
         #endregion

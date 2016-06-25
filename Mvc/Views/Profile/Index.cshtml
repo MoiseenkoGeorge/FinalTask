@@ -1,0 +1,10 @@
+﻿@model Mvc.Models.ProfileViewModel
+
+@{
+
+    ViewBag.Title = Model.FirstName + Model.LastName;
+}
+
+
+@Html.Partial("_ProfileUnit",Model)
+

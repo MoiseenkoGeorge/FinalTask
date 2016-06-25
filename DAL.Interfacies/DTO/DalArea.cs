@@ -7,6 +7,5 @@ namespace DAL.Interfacies.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<DalProfile> DalProfiles { get; set; }
     }
 }

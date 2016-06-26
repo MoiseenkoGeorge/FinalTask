@@ -76,6 +76,15 @@ namespace Mvc.Providers
             }
             return false;
         }
+
+        public bool DeleteUser(int id, bool deleteAllRelatedData)
+        {
+            var user = userService.GetUserEntity(id);
+            if (user == null) return false;
+            userService.DeleteUser(user);
+            return true;
+        }
+
         #region stabs
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer,
             bool isApproved, object providerUserKey, out MembershipCreateStatus status)
@@ -129,6 +138,7 @@ namespace Mvc.Providers
         {
             throw new NotImplementedException();
         }
+
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {

@@ -41,7 +41,9 @@ namespace Mvc.Infrastructure.Mappers
                 ImageUrl = profileEntity.ImageUrl,
                 UserId = profileEntity.UserId,
                 Description = profileEntity.Description,
-                Areas = profileEntity.AreaEntities?.Select( a => a.Name)
+                Email = profileEntity.Email,
+                Areas = profileEntity.AreaEntities,
+                Id = profileEntity.Id
             };
         }
 
@@ -55,7 +57,9 @@ namespace Mvc.Infrastructure.Mappers
                 Age = profile.Birthday,
                 Description = profile.Description,
                 UserId = profile.UserId,
-                AreaEntities = profile.Areas.Select(a => new AreaEntity() {Name = a})
+                AreaEntities = profile.Areas,
+                Email = profile.Email,
+                Id = profile.Id
             };
         }
     }

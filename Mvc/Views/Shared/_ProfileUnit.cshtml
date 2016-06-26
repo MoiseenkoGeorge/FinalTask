@@ -1,53 +1,50 @@
 ﻿@model Mvc.Models.ProfileViewModel
 
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
-
-
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">Profile</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src = @Model.ImageUrl class="img-circle img-responsive"> </div>
-
-                <div class="col-md-9 col-lg-9">
-                    <table class="table table-user-information">
-                        <tbody>
-                        <tr>
-                            <td>First Name:</td>
-                            <td>@Html.DisplayText(@Model.FirstName ?? "not indicated")</td>
-                        </tr>
-                        <tr>
-                            <td>Last Name:</td>
-                            <td>@Html.DisplayText(@Model.LastName ?? "not indicated")</td>
-                        </tr>
-                        <tr>
-                            <td>Description:</td>
-                            <td>@Html.DisplayText(@Model.Description ?? "not indicated")</td>
-                        </tr>
-                            <tr>
-                                <td>Date of Birth:</td>
-                                <<td>@Html.DisplayText(@Model.Birthday.HasValue ? @Model.Birthday.Value.ToString() : "")</td>
-                            </tr>
-                        <tr>
-                            <td>Department:</td>
-                            <td>User</td>
-                        </tr>
-
-                        <tr>
-                            <tr>
-                                <td>Email</td>
-                                <td><a href="mailto:info@support.com">info@support.com</a></td>
-                            </tr>
-                        </tr>
-
-                        </tbody>
-                    </table>
-
-                </div>
+<div class="container" style="padding-top: 60px;">
+    <h1 class="page-header">Profile</h1>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="text-center">
+                <img src=@Model.ImageUrl class="avatar img-circle img-thumbnail" alt="avatar">
             </div>
         </div>
+        <!-- edit form column -->
+        <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+            <h3>Personal info</h3>
+            <hr/>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label">Last name:</label>
+                    @Html.DisplayFor(m => m.FirstName, new {@class = "form-control col-lg-8"})
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Last name:</label>
+                    @Html.DisplayFor(m => m.LastName, new {@class = "form-control col-lg-8"})
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Birthday:</label>
+                    @Html.DisplayFor(m => m.Birthday, new {@class = "form-control col-lg-8"})
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Email:</label>
+                    @Html.DisplayTextFor(m => m.Email)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Description:</label>
+                    <div class="">
+                        <p>@Model.Description</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Skills:</label>
 
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+@if (User.Identity.Name == Model.Email)
+{
+    @Html.RouteLink("Edit","Default",new {controller = "Profile", action = "Edit", id = Model.UserId})
+}

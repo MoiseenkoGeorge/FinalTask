@@ -27,7 +27,7 @@ namespace BLL.Services
 
         public UserEntity GetUserEntity(int id)
         {
-            return userRepository.GetById(id).ToBllUser();
+            return userRepository.GetById(id)?.ToBllUser();
         }
         
         public IEnumerable<UserEntity> GetAllUserEntities()
@@ -50,6 +50,7 @@ namespace BLL.Services
 
         public void DeleteUser(UserEntity user)
         {
+            profileRepository.Delete(profileRepository.GetByPredicate(p => p.UserId == user.Id));
             userRepository.Delete(user.ToDalUser());
             uow.Commit();
         }

@@ -1,0 +1,57 @@
+﻿@model BLL.Interfacies.Entities.ProfileEntity
+@Html.AntiForgeryToken()
+<div class="container" style="padding-top: 60px;">
+    <h1 class="page-header">Edit Profile</h1>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="text-center">
+                <img src=@Model.ImageUrl id="Avatar" class="avatar img-circle img-thumbnail" alt="avatar">
+                <h6>Upload a different photo...</h6>
+                <input type="file" id="uploadFileBtn" class="text-center center-block well well-sm">
+            </div>
+        </div>
+        <!-- edit form column -->
+        <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+            <h3>Personal info</h3>
+            <hr/>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">First name:</label>
+                    <div class="col-lg-8">
+                        @Html.Bootstrap().TextBoxFor(m => m.FirstName).Value(@Model.FirstName).Class("form-control")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Last name:</label>
+                    <div class="col-lg-8">
+                        @Html.Bootstrap().TextBoxFor(m => m.LastName).Value(@Model.FirstName).Class("form-control")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Birthday:</label>
+                    <div class="col-lg-8">
+                        @Html.Bootstrap().TextBoxFor(m => m.Age).Value(@Model.Age).Class("form-control").Id("datepicker")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Description:</label>
+                    <div class="col-lg-8">
+                        @Html.Bootstrap().TextAreaFor(m => m.Description).Value(@Model.Description).Class("form-control")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                        <input class="btn btn-primary" id="btn-save" value="Save Changes" type="button">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/ChangeAvatar")
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+

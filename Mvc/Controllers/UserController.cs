@@ -15,20 +15,19 @@ using reCAPTCHA.MVC;
 
 namespace Mvc.Controllers
 {
-    [AllowAnonymous]
+    
     public class UserController : Controller
     {
         private readonly IUserService userService;
-        private readonly IProfileService profileService;
         private readonly CustomMembershipProvider provider;
-        public UserController(IUserService service, CustomMembershipProvider provider, IProfileService profileService)
+        public UserController(IUserService service, CustomMembershipProvider provider)
         {
             this.userService = service;
             this.provider = provider;
-            this.profileService = profileService;
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -76,13 +75,13 @@ namespace Mvc.Controllers
                     }
                     
                     FormsAuthentication.SetAuthCookie(registerViewModel.Email, false);
-                    return RedirectToAction("Confirm", "User", new { Email = membershipUser.Email });
+                    return View("DisplayEmail");
                 }
                 ModelState.AddModelError("", "User with the same email has registred yet");
             }
             return View(registerViewModel);
         }
-
+        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             var type = HttpContext.User.GetType();
@@ -124,6 +123,7 @@ namespace Mvc.Controllers
 
         //GET-запрос к методу Delete несет потенциальную уязвимость!
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id = 0)
         {
             UserEntity user = userService.GetUserEntity(id);
@@ -131,8 +131,7 @@ namespace Mvc.Controllers
             {
                 return RedirectToAction("NotFound", "Home");
             }
-            return View();
-            //return View(user.ToMvcUser());
+            return View(user.ToUserView());
         }
 
         //Post/Redirect/Get (PRG) — модель поведения веб-приложений, используемая
@@ -143,7 +142,7 @@ namespace Mvc.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(UserEntity user)
         {
-            userService.DeleteUser(user);
+            provider.DeleteUser(user.Id,true);
             return RedirectToAction("Index", "Home");
         }
 
@@ -152,21 +151,17 @@ namespace Mvc.Controllers
         {
             return PartialView("_LoginPartial");
         }
-
-        public string Confirm(string email)
-        {
-            return "On " + email + " you will be sent further instructions to complete the registration";
-        }
+        [Authorize]
         public ActionResult ConfirmEmail(string token, string email)
         {
 
             if (!provider.ConfirmEmail(id: Int32.Parse(token), email: email))
             {
-                return RedirectToAction("Confirm", "User", new { Email = email });
+                return RedirectToAction("Index", "Home", new { Email = email });
             }
             else
             {
-                return RedirectToAction("Confirm", "User", new { Email = "" });
+                return RedirectToAction("Index", "Home", new { Email = "" });
             }
         }
         //etc.

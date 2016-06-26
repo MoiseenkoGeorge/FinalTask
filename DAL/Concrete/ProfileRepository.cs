@@ -36,7 +36,7 @@ namespace DAL.Concrete
 
         public DalProfile GetById(int key)
         {
-            return context.Set<Profile>().FirstOrDefault(profile => profile.Id == key).ToDalProfile();
+            return context.Set<Profile>().FirstOrDefault(profile => profile.Id == key)?.ToDalProfile();
         }
 
         public DalProfile GetByPredicate(Expression<Func<DalProfile, bool>> f)

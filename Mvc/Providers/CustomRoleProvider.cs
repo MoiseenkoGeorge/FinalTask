@@ -1,54 +1,39 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Security;
 using BLL.Interface.Services;
+using System.Web.Mvc;
 using BLL.Interfacies.Services;
+using BLL.Services;
+using DAL.Concrete;
+using DAL.Interface.Repository;
+using Mvc.Infrastructure;
 
 namespace Mvc.Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
         private readonly IUserService userService;
-        private readonly IRoleService roleService;
 
-        public CustomRoleProvider(IUserService userService, IRoleService roleService)
+        public CustomRoleProvider(IUserService userService)
         {
             this.userService = userService;
-            this.roleService = roleService;
         }
 
+        public CustomRoleProvider():this(System.Web.Mvc.DependencyResolver.Current.GetService<IUserService>())
+        {
+            
+        }
         public override bool IsUserInRole(string email, string roleName)
         {
             var user = userService.GetUserByEmail(email);
-            if (user != null)
-            {
-                // получаем роль
-                var userRole = roleService.GetRoleEntity(user.RoleId);
-
-                //сравниваем
-                if (userRole != null && userRole.Name == roleName)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return user != null && user.RoleEntities.Any(userRole => userRole.Name == roleName);
         }
 
         public override string[] GetRolesForUser(string email)
         {
-            string[] role = new string[] { };
-            // Получаем пользователя
             var user = userService.GetUserByEmail(email);
-            if (user != null)
-            {
-                // получаем роль
-                var userRole = roleService.GetRoleEntity(user.RoleId);
-
-                if (userRole != null)
-                {
-                    role = new[] { userRole.Name };
-                }
-            }
-            return role;
+            return user?.RoleEntities.Select(entity => entity.Name).ToArray();
         }
         #region stabs
 

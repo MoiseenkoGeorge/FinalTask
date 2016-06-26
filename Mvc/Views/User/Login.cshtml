@@ -1,47 +1,20 @@
-﻿@model Mvc.Models.LogOnViewModel
+﻿
+@model Mvc.Models.LogOnViewModel
 
 @{
     ViewBag.Title = "Login";
 }
+<h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (var f = Html.Bootstrap().Begin(new Form("Login", "User").RouteValues(new { ReturnUrl = ViewBag.ReturnUrl }).FormMethod(FormMethod.Post).Type(FormType.Horizontal)))
 {
+    <h4>Sign In</h4>
+    <hr/>
     @Html.AntiForgeryToken()
+    @Html.Bootstrap().ValidationSummary().Class("text-danger").ExcludePropertyErrors(true)
+    @f.FormGroup().TextBoxFor(m => m.Email).Placeholder()
+    @f.FormGroup().PasswordFor( m => m.Password).Placeholder()
+    @f.FormGroup().CheckBoxFor(m => m.RememberMe)
+    @f.FormGroup().CustomControls(Html.Bootstrap().SubmitButton().Text("Sign in").Class("btn-success"))
 
-    <div class="form-horizontal">
-        <h4>Log on</h4>
-        <hr/>
-        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Email, new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.PasswordFor(model => model.Password, new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RememberMe, htmlAttributes: new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.RememberMe)
-                    @Html.ValidationMessageFor(model => model.RememberMe, "", new {@class = "text-danger"})
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-2">
-                <input type="submit" value="Login" class="btn btn-success"/>
-            </div>
-        </div>
-    </div>
-    }
+}

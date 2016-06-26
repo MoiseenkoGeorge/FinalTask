@@ -14,7 +14,7 @@ namespace DAL.Concrete
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DbContext _context;
+        private DbContext _context;
 
         public UserRepository(DbContext uow)
         {
@@ -39,7 +39,7 @@ namespace DAL.Concrete
 
         public DalUser GetById(int key)
         {
-            return _context.Set<User>().FirstOrDefault(user => user.Id == key).ToDalUser();
+            return _context.Set<User>().FirstOrDefault(user => user.Id == key)?.ToDalUser();
         }
 
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> f)
@@ -67,8 +67,10 @@ namespace DAL.Concrete
         public void Delete(DalUser e)
         {
             var user = _context.Set<User>().SingleOrDefault(u => u.Id == e.Id);
-            if(user != default(User))
+            if (user != default(User))
+            {
                 _context.Set<User>().Remove(user);
+            }
         }
 
         public void Update(DalUser entity)

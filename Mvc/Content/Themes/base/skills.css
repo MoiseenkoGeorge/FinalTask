@@ -1,0 +1,185 @@
+﻿@font-face {
+    font-family: GothamB;
+    src: url(fonts/GothamSSm-Book.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: GothamL;
+    src: url(fonts/GothamSSm-Light.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: GothamM;
+    src: url(fonts/GothamSSm-Medium.woff);
+    font-weight: 500;
+}
+
+html, body {
+  font-size: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.button {
+  width: 299px;
+  height: 59px;
+  padding: 0;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  font-family: GothamB, sans-serif;
+  font-size: 15px;
+  background-color:  #fb6362;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+
+
+.shadow {
+  border: none;
+  border-radius: 2px;
+  background-color:  #f4f4f4;
+  box-shadow:inset 0 1px 4px -1px rgba(0, 0, 0, 0.44);
+}
+
+/*Email widget*/
+
+.email {
+  position: absolute;
+  top: 527px;
+  left: 50px;
+  width: 330px;
+  min-height: 437px;
+  margin-bottom: 100px;
+  padding: 25px 25px;
+  border-radius: 4px;
+  font-family: GothamL, sans-serif;
+  font-size: 14px;
+  background-color:  white;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.44);
+}
+
+  .mail {
+    position: relative;
+    margin-bottom: 25px;
+  }
+
+    .clearfix:after {
+      content: "";
+      display: block;
+      visibility: hidden;
+      height: 0;
+      clear: both;
+    }
+
+    .address {
+      position: relative;
+      display: inline-block;
+      height: 37px;
+      margin: 4px;
+      color: white;
+      background-color: #404a58;
+      clear: right;
+    }
+
+      .address p {
+        margin: 11px 25px 0 11px;
+      }
+
+      .address a {
+        position: absolute;
+        right: 9px;
+        bottom: 13px;
+        width: 8px;
+        height: 8px;
+        background: url("images/spritesheet.png");
+        background-position: -76px -124px;
+      }
+
+    /*Displays after add button was pressed*/
+    .mail-input {
+      display: none;
+      width: calc(100% - 20px);
+      height: 37px;
+      margin-left: 4px;
+      margin-bottom: 4px;
+      padding-left: 12px;
+      border: none;
+      background-color:  #f4f4f4;
+    }
+
+    .add {
+      float: right;
+      margin: 15px 12px 0;
+      width: 16px;
+      height: 16px;
+      background: url("images/spritesheet.png");
+      background-position: -72px -149px;
+    }
+
+  .subject-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+    .subject {
+      position: relative;
+      width: 318px;
+      height: 45px;
+      margin-bottom: 22px;
+      padding-left: 12px;
+      color: #999999;
+      font-family: GothamL, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .clip {
+      position: absolute;
+      right: 12px;
+      top: 13px;
+      width: 21px;
+      height: 21px;
+      background: url("images/spritesheet.png");
+      background-position: -92px -177px;
+      background-color: #f4f4f4;
+    }
+
+    .file {
+      position: absolute;
+      right: 12px;
+      top: 15px;
+      width: 21px;
+      height: 19px;
+      opacity: 0;
+    }
+
+    .message {
+      width: 306px;
+      height: 196px;
+      margin-bottom: 70px;
+      padding: 14px 12px;
+      color: #999999;
+      font-family: GothamL, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      resize: none;
+    }
+
+  .email-form {
+    position: relative;
+  }
+
+  .send {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 127px;
+    height: 49px;
+  }
+  

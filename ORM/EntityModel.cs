@@ -28,6 +28,11 @@ namespace ORM
                 .HasMany(e => e.Users)
                 .WithMany(e => e.Roles)
                 .Map(m => m.ToTable("UserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Profiles)
+                .WithRequired(e => e.User)
+                .WillCascadeOnDelete(false);
         }
     }
 }

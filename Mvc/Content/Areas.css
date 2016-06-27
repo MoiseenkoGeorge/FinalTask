@@ -1,13 +1,13 @@
-.container {
-  background-color: #fff;
+.containr {
+  background-color: #ffe4e1;
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.tags {
+.areas {
   margin: 0 auto;
-  background-color: #f4f4f4;
+  background-color: #808080;
   width: 800px;
   padding: 20px;
 }
@@ -16,7 +16,7 @@
   display: inline-block;
   padding: 5px 10px;
   margin: 5px 10px;
-  background-color: #efefef;
+  background-color: #d8bfd8;
   box-sizing: border-box;
   word-wrap: break-word;
 }
@@ -27,22 +27,13 @@
 
 .delete-tag-button {
   border: 1px solid #fff;
-  background-color: #f4f4f4;
+  background-color: #f08080;
   color: #848587;
   font-weight: 900;
   border-radius: 3px;
 }
 
-.tags-input button {
-  background-color: #2371af;
-  border-radius: 7px;
-  color: #fff;
-  font-weight: 900;
-  border-style: none;
-  padding: 4px 10px;
-  cursor: pointer;
-  user-select: none;
-}
+
 
 .tags-input button:focus {
   outline:none;

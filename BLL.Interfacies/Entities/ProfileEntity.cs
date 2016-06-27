@@ -16,6 +16,7 @@ namespace BLL.Interfacies.Entities
         public string Description { get; set; }
         public int UserId { get; set; }
         public DateTime? Age { get; set; }
-        public IEnumerable<string> AreaEntities { get; set; } 
+        public IEnumerable<string> AreaEntities { get; set; }
+        public string Role { get; set; } 
     }
 }

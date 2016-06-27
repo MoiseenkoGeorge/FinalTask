@@ -31,7 +31,11 @@ namespace DAL.Concrete
 
         public DalRole GetByPredicate(Expression<Func<DalRole, bool>> f)
         {
-            throw new NotImplementedException();
+            return _context.Set<Role>().Select(user => new DalRole()
+            {
+                Id = user.Id,
+                Name = user.Name
+            }).SingleOrDefault(f);
         }
 
         public void Create(DalRole role)

@@ -29,7 +29,7 @@ namespace DAL.Concrete
 
         public DalArea GetById(int key)
         {
-            return _context.Set<Area>().FirstOrDefault(area => area.Id == key).ToDalArea();
+            return _context.Set<Area>().FirstOrDefault(area => area.Id == key)?.ToDalArea();
         }
 
         public DalArea GetByPredicate(Expression<Func<DalArea, bool>> f)

@@ -27,10 +27,14 @@ namespace Mvc
                       "~/Content/bootstrap.min.css",
                       "~/Content/site.css"
                       ));
-            bundles.Add(new ScriptBundle("~/bundles/ChangeAvatar").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ProfileEdit").Include(
+                "~/Scripts/AddArea.js",
                 "~/Scripts/jquery-3.0.0.min.js",
                 "~/Scripts/UploadAvatar.js"
                 ));
+
+            bundles.Add(new StyleBundle("~/Content/areas").Include(
+                "~/Content/Areas.css"));
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DAL.Concrete
 {
     public class UserRepository : IUserRepository
     {
-        private DbContext _context;
+        private readonly DbContext _context;
 
         public UserRepository(DbContext uow)
         {

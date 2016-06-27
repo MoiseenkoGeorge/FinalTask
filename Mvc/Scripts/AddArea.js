@@ -1,26 +1,24 @@
-document.addEventListener('DOMContentLoaded', function() {
-  var addButton = document.getElementById('add-tag-button');
-  var tagNameInput = document.getElementById('tag-name');
-  var tagsContainer = document.getElementById('tags-container');
 
-  var createTag = function(tagText) {
-    newElement = document.createElement('div');
-    newElement.innerHTML = `${tagText} <button class="delete-tag-button">X</button>`;
-    newElement.classList.add('element');
-    return newElement;
-  };
+document.addEventListener('DOMContentLoaded', function () {
+    var createTag = function (tagText) {
+        return $(`<div class="element"><span>${tagText}</span> <button class="delete-tag-button">X</button></div>`)
+    };
 
-  tagsContainer.addEventListener('click', function(event) {
-    if(event.target.classList.contains('delete-tag-button')) {
-      tagsContainer.removeChild(event.target.parentNode);
-    }
-  });
+    $('#tags-container').click(function(event) {
+        event.preventDefault();
+        if ($(event.target).hasClass("delete-tag-button")) {
+            $(event.target).parent().fadeOut('300', function () {
+                $(this).remove();
+            });
+        }
+    });
 
-  addButton.addEventListener('click', function() {
-    if(tagNameInput.value) {
-      var newElement = createTag(tagNameInput.value);
-      tagNameInput.value = '';
-      tagsContainer.appendChild(newElement);
-    }
-  });
+    $('#add-tag-button').click(function (event) {
+        event.preventDefault();
+        var $tagNameElement = $('#tag-name');
+        if ($tagNameElement.val()) {
+            createTag($tagNameElement.val()).appendTo($('#tags-container'));
+            $tagNameElement.val('');
+        }
+    });
 });

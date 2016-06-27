@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BLL.Interfacies.Services;
 using Mvc.Infrastructure.Mappers;
+using Mvc.Models;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace Mvc.Controllers
 {
@@ -28,7 +32,8 @@ namespace Mvc.Controllers
                 return View("Error");
             return View(profile.ToProfileViewModel());
         }
-
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -38,79 +43,49 @@ namespace Mvc.Controllers
                 return RedirectToAction("NotFound", "Home");
             if (User.Identity.Name != profile.Email)
                 return RedirectToAction("Index", id);
-            return View(profile);
+            return View(profile.ToProfileViewModel());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Edit(ProfileViewModel profileViewModel)
+        {
+            profileViewModel.UserId = profileViewModel.Id;
+            profileService.UpdateProfile(profileViewModel.ToProfileEntity());
+            return View(profileViewModel);
         }
 
+        [HttpPost]
+        public JsonResult Upload()
+        {
+            bool flag = false;
+            List<ImageUploadResult> UploadResultlist = new List<ImageUploadResult>();
+            string fileName = "";
+            Account account = new Account("djb7hr8nk", "981823513498862", "ortnIAykexsGNcYTGiMTNjIarvo");
+            CloudinaryDotNet.Cloudinary cloudinary = new Cloudinary(account);
+            ImageUploadResult uploadResultImg = new ImageUploadResult();
+            ImageUploadParams uploadParamsImg = new ImageUploadParams();
+            foreach (string file in Request.Files)
+            {
+                var upload = Request.Files[file];
+                if (upload != null)
+                {
+                    // получаем имя файла
+                    fileName = System.IO.Path.GetFileName(upload.FileName);
+                    // сохраняем файл в папку Files в проекте
+                    upload.SaveAs(Server.MapPath("~/Files/" + fileName));
+                    uploadParamsImg = new ImageUploadParams()
+                    {
+                        File = new FileDescription(Server.MapPath("~/Files/" + fileName)),
+                        PublicId = User.Identity.Name + fileName + DateTime.Now.Millisecond.ToString(),
+                    };
+                }
+            }
 
-        //[HttpPost]
-        //public JsonResult Upload()
-        //{
-        //    bool flag = false;
-        //    List<ImageUploadResult> UploadResultlist = new List<ImageUploadResult>();
-        //    string fileName = "";
-        //    Account account = new Account(Resources.GlobalResources.cloudName, Resources.GlobalResources.cloudApi, Resources.GlobalResources.cloudApiSecret);
-        //    CloudinaryDotNet.Cloudinary cloudinary = new Cloudinary(account);
-        //    ImageUploadResult uploadResultImg = new ImageUploadResult();
-        //    ImageUploadResult uploadResultDemotivator = new ImageUploadResult();
-        //    ImageUploadParams uploadParamsImg = new ImageUploadParams();
-        //    ImageUploadParams uploadParamsDemotivator = new ImageUploadParams();
-        //    foreach (string file in Request.Files)
-        //    {
-        //        var upload = Request.Files[file];
-        //        if (upload != null)
-        //        {
-        //            // получаем имя файла
-        //            fileName = System.IO.Path.GetFileName(upload.FileName);
-        //            // сохраняем файл в папку Files в проекте
-        //            upload.SaveAs(Server.MapPath("~/Files/" + fileName));
-        //            uploadParamsImg = new ImageUploadParams()
-        //            {
-        //                File = new FileDescription(Server.MapPath("~/Files/" + fileName)),
-        //                PublicId = User.Identity.Name + fileName + DateTime.Now.Millisecond.ToString(),
-        //            };
-        //        }
-        //    }
-        //    foreach (string file in Request.Form)
-        //    {
-        //        var upload = Request.Form[file];
-        //        if (upload != null)
-        //        {
-        //            if (upload.Contains("data:image/png;base64"))
-        //            {
-        //                string x = upload.Replace("data:image/png;base64,", "");
-        //                byte[] imageBytes = Convert.FromBase64String(x);
-        //                MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length);
-
-
-        //                ms.Write(imageBytes, 0, imageBytes.Length);
-        //                System.Drawing.Image image = System.Drawing.Image.FromStream(ms, true);
-        //                image.Save(Server.MapPath("~/Files/img.png"), System.Drawing.Imaging.ImageFormat.Png);
-
-        //                uploadParamsDemotivator = new ImageUploadParams()
-        //                {
-        //                    File = new FileDescription(Server.MapPath("~/Files/img.png")),
-        //                    PublicId = User.Identity.Name + fileName + "demotivator" + DateTime.Now.Millisecond.ToString()
-        //                };
-        //            }
-        //            else
-        //            {
-        //                flag = true;
-        //                uploadParamsImg = new ImageUploadParams()
-        //                {
-        //                    File = new FileDescription(upload),
-        //                    PublicId = User.Identity.Name + fileName + DateTime.Now.Millisecond.ToString()
-        //                };
-        //            }
-        //        }
-        //    }
-
-        //    uploadResultImg = cloudinary.Upload(uploadParamsImg);
-        //    UploadResultlist.Add(uploadResultImg);
-        //    uploadResultDemotivator = cloudinary.Upload(uploadParamsDemotivator);
-        //    UploadResultlist.Add(uploadResultDemotivator);
-        //    if (!flag) System.IO.File.Delete(Server.MapPath("~/Files/" + fileName));
-        //    System.IO.File.Delete(Server.MapPath("~/Files/img.png"));
-        //    return Json(UploadResultlist, JsonRequestBehavior.AllowGet);
-        //}
+            uploadResultImg = cloudinary.Upload(uploadParamsImg);
+            UploadResultlist.Add(uploadResultImg);
+            if (!flag) System.IO.File.Delete(Server.MapPath("~/Files/" + fileName));
+            return Json(UploadResultlist, JsonRequestBehavior.AllowGet);
+        }
     }
 }

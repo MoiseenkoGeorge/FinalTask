@@ -14,7 +14,6 @@ namespace ORM
             Profiles = new HashSet<Profile>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]

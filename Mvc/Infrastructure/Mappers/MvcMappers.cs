@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using BLL.Interface.Entities;
@@ -43,7 +44,8 @@ namespace Mvc.Infrastructure.Mappers
                 Description = profileEntity.Description,
                 Email = profileEntity.Email,
                 Areas = profileEntity.AreaEntities,
-                Id = profileEntity.Id
+                Id = profileEntity.Id,
+                Role = (Role)Enum.Parse(typeof(Role), profileEntity.Role)
             };
         }
 
@@ -57,9 +59,10 @@ namespace Mvc.Infrastructure.Mappers
                 Age = profile.Birthday,
                 Description = profile.Description,
                 UserId = profile.UserId,
-                AreaEntities = profile.Areas,
+                AreaEntities = profile.Areas?.ToArray()[0].Split(';'),
                 Email = profile.Email,
-                Id = profile.Id
+                Id = profile.Id,
+                Role = profile.Role.ToString()
             };
         }
     }

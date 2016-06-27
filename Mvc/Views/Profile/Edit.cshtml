@@ -1,56 +1,108 @@
-﻿@model BLL.Interfacies.Entities.ProfileEntity
-@Html.AntiForgeryToken()
-<div class="container" style="padding-top: 60px;">
-    <h1 class="page-header">Edit Profile</h1>
-    <div class="row">
-        <!-- left column -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="text-center">
-                <img src=@Model.ImageUrl id="Avatar" class="avatar img-circle img-thumbnail" alt="avatar">
-                <h6>Upload a different photo...</h6>
-                <input type="file" id="uploadFileBtn" class="text-center center-block well well-sm">
+﻿@using Mvc.Models
+@model ProfileViewModel
+
+@using (Html.BeginForm("Edit", "Profile", FormMethod.Post, htmlAttributes: new { id = "Form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container" style="padding-top: 60px;">
+        <h1 class="page-header">Edit Profile</h1>
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="text-center">
+                    <img src=@Model.ImageUrl id="Avatar" class="avatar img-circle img-thumbnail" alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                    <input type="file" id="uploadFileBtn" class="text-center center-block well well-sm">
+                </div>
+            </div>
+            <!-- edit form column -->
+            <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+                <h3>Personal info</h3>
+                <hr/>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">First name:</label>
+                        <div class="col-lg-8">
+                            @Html.Bootstrap().TextBoxFor(m => m.FirstName).Value(@Model.FirstName).Class("form-control")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Last name:</label>
+                        <div class="col-lg-8">
+                            @Html.Bootstrap().TextBoxFor(m => m.LastName).Value(@Model.FirstName).Class("form-control")
+                        </div>
+                    </div>
+                    @if (!@User.IsInRole("Programmist") && !@User.IsInRole("Manager"))
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Role:</label>
+                            <div class="col-lg-8">
+
+                                {
+                                @Html.DropDownListFor(m => m.Role, new SelectList(Enum.GetNames(typeof(Role)).Where(x => x != "Administrator" && x != "User")), new { id = "role", @class = "form-control" })
+                                }
+                                else
+                                {
+                                if (@User.IsInRole("Programmist"))
+                                {
+                                @Html.DisplayText("Programmist");
+                                }
+                                else
+                                {
+                                @Html.DisplayText("Manager");
+                                }
+                                }
+
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Birthday:</label>
+                        <div class="col-lg-8">
+                            @Html.Bootstrap().TextBoxFor(m => m.Birthday).Value(@Model.Birthday).Class("form-control").Id("datepicker")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description:</label>
+                        <div class="col-lg-8">
+                            @Html.Bootstrap().TextAreaFor(m => m.Description).Value(@Model.Description).Class("form-control")
+                        </div>
+                    </div>
+                    @if (!User.IsInRole("Manager"))
+                    {
+                        <div class="form-group" id="areas-div">
+                            <label class="col-lg-3 control-label">Areas:</label>
+                            <div class="areas col-lg-8">
+                                <div class="tags-input">
+                                    <input type="text" id="tag-name" placeholder="Type area here">
+                                    @Html.Bootstrap().Button().Text("add").Class("btn-success").Id("add-tag-button")
+                                </div>
+                                <div class="containr" id="tags-container">
+                                    @foreach (var area in @Model.Areas)
+                                    {
+                                        <div class="element">
+                                            <span>@area</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-8">
+                            @Html.Bootstrap().SubmitButton().Text("Save Changes").Class("btn-primary").Id("btn-save")
+                        </div>
+                    </div>
+                    @Html.HiddenFor(m => m.Areas,new {id = "areas"})
+                    @Html.HiddenFor(m => m.ImageUrl, new {id = "imageUrl"})
+                </form>
             </div>
         </div>
-        <!-- edit form column -->
-        <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-            <h3>Personal info</h3>
-            <hr/>
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">First name:</label>
-                    <div class="col-lg-8">
-                        @Html.Bootstrap().TextBoxFor(m => m.FirstName).Value(@Model.FirstName).Class("form-control")
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">Last name:</label>
-                    <div class="col-lg-8">
-                        @Html.Bootstrap().TextBoxFor(m => m.LastName).Value(@Model.FirstName).Class("form-control")
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">Birthday:</label>
-                    <div class="col-lg-8">
-                        @Html.Bootstrap().TextBoxFor(m => m.Age).Value(@Model.Age).Class("form-control").Id("datepicker")
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">Description:</label>
-                    <div class="col-lg-8">
-                        @Html.Bootstrap().TextAreaFor(m => m.Description).Value(@Model.Description).Class("form-control")
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
-                    <div class="col-md-8">
-                        <input class="btn btn-primary" id="btn-save" value="Save Changes" type="button">
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
-</div>
-@Scripts.Render("~/bundles/ChangeAvatar")
+}
+@Scripts.Render("~/bundles/ProfileEdit")
+@Styles.Render("~/Content/areas")
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 

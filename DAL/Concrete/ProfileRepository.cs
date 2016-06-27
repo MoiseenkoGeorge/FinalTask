@@ -15,15 +15,15 @@ namespace DAL.Concrete
 {
     public class ProfileRepository : IProfileRepository
     {
-        private readonly DbContext context;
+        private readonly DbContext _context;
 
         public ProfileRepository(DbContext context)
         {
-            this.context = context;
+            this._context = context;
         }
         public IEnumerable<DalProfile> GetAll()
         {
-            return context.Set<Profile>().Select(profile => new DalProfile()
+            return _context.Set<Profile>().Select(profile => new DalProfile()
             {
                 Id = profile.Id,
                 Age = profile.Age,
@@ -36,48 +36,71 @@ namespace DAL.Concrete
 
         public DalProfile GetById(int key)
         {
-            return context.Set<Profile>().FirstOrDefault(profile => profile.Id == key)?.ToDalProfile();
+            return _context.Set<Profile>().FirstOrDefault(profile => profile.Id == key)?.ToDalProfile();
         }
 
         public DalProfile GetByPredicate(Expression<Func<DalProfile, bool>> f)
         {
-            return context.Set<Profile>().Select(profile => new DalProfile()
+            return _context.Set<Profile>().Select(profile => new DalProfile()
             {
                 Id = profile.Id,
                 Age = profile.Age,
                 ImageUrl = profile.ImageUrl,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                UserId = profile.UserId
+                UserId = profile.UserId,
+                Description = profile.Description,
+                DalAreas = profile.Areas.Select(area => new DalArea()
+                {
+                    Id = area.Id,
+                    Name = area.Name
+                })
             }).SingleOrDefault(f);
         }
 
         public void Create(DalProfile e)
         {
-            context.Set<Profile>().Add(e.ToProfile());
+            _context.Set<Profile>().Add(e.ToProfile());
         }
 
         public void Delete(DalProfile e)
         {
-            var profile = context.Set<Profile>().SingleOrDefault(p => p.Id == e.Id);
+            var profile = _context.Set<Profile>().SingleOrDefault(p => p.Id == e.Id);
             if (profile != default(Profile))
-                context.Set<Profile>().Remove(profile);
+                _context.Set<Profile>().Remove(profile);
         }
 
         public void Update(DalProfile entity)
         {
             var profile = entity.ToProfile();
 
-            var localUser = context.Set<Profile>().Local.FirstOrDefault(u => u.Id == profile.Id);
+            var localUser = _context.Set<Profile>().Local.FirstOrDefault(u => u.UserId == profile.UserId);
             if (localUser != null)
             {
-                context.Entry(localUser).CurrentValues.SetValues(profile);
+                _context.Entry(localUser).CurrentValues.SetValues(profile);
             }
             else
             {
-                context.Set<Profile>().Attach(profile);
-                context.Entry(profile).State = EntityState.Modified;
+                _context.Set<Profile>().Attach(profile);
+                _context.Entry(profile).State = EntityState.Modified;
             }
+        }
+
+        public void AddAreaToProfile(DalProfile dalProfile, DalArea dalArea)
+        {
+            var profile = dalProfile.ToProfile();
+            var area = dalArea.ToArea();
+
+            if (profile.Areas.Contains(area))
+                return;
+            profile = _context.Set<Profile>().Local.FirstOrDefault(p => p.Id == profile.Id) ?? profile;
+            area = _context.Set<Area>().Local.FirstOrDefault(r => r.Id == area.Id) ?? area;
+
+            _context.Set<Profile>().Attach(profile);
+            _context.Set<Area>().Attach(area);
+
+            _context.Entry(profile).Collection(x => x.Areas).Load();
+            profile.Areas.Add(area);
         }
     }
 }

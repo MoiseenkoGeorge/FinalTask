@@ -23,5 +23,6 @@ namespace Mvc.Models
         [DisplayFormat(NullDisplayText = "null")]
         public DateTime? Birthday { get; set; }
         public IEnumerable<string> Areas { get; set; }
+        public Role Role { get; set; }
     }
 }

@@ -15,6 +15,11 @@ namespace Mvc
 
             routes.MapRoute("404", "404", new { controller = "Home", action = "NotFound" });
             routes.MapRoute(
+                name: "UploadImg",
+                url: "Profile/Upload",
+                defaults: new { controller = "Profile", action = "Upload"}
+                );
+            routes.MapRoute(
                 name: "Profile",
                 url: "Profile/{id}",
                 defaults: new { controller = "Profile", action = "Index", id = UrlParameter.Optional });

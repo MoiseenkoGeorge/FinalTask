@@ -10,6 +10,6 @@ namespace DAL.Interface.Repository
 {
     public interface IProfileRepository : IRepository<DalProfile>
     {
-        
+        void AddAreaToProfile(DalProfile dalProfile, DalArea dalArea);
     }
 }

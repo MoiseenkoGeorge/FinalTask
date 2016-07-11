@@ -14,16 +14,8 @@ namespace Mvc.Providers
     public class CustomMembershipProvider : MembershipProvider
     {
 
-        private readonly IUserService userService;
+        private IUserService userService => (IUserService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IUserService));
 
-        public CustomMembershipProvider(IUserService service)
-        {
-            this.userService = service;
-        }
-        public CustomMembershipProvider()
-        {
-                
-        }
         public MembershipUser CreateUser(RegisterViewModel registerViewModel)
         {
 

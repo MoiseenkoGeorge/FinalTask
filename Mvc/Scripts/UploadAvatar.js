@@ -28,30 +28,33 @@ function ChangeRole() {
         $("#areas-div").show();
 }
 
-$('#btn-save').on('click', function (e) {
+$('#btn-save').on('click', function(e) {
     e.preventDefault();
     $("#areas").val($('.containr span').map((index, element) => element.innerHTML).toArray().join(';'));
-    if (window.FormData !== undefined) {
-        var data = new FormData();
-        data.append("image", $('#uploadFileBtn')[0].files[0]);
-        $.ajax({
-            type: "POST",
-            url: '/Profile/Upload/',
-            async: false,
-            contentType: false,
-            processData: false,
-            data: data,
-            success: function (result) {
-                $("#imageUrl").val(result[0].Uri);
-                form.submit();
-                return;
-            },
-            error: function (xhr, status, p3) {
-                alert(xhr.responseText);
-            }
-        });
-    } else {
-        alert("Браузер не поддерживает загрузку файлов HTML5!");
+    if ($('#uploadFileBtn')[0].files[0] != null) {
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            data.append("image", $('#uploadFileBtn')[0].files[0]);
+            $.ajax({
+                type: "POST",
+                url: '/Profile/Upload/',
+                async: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function(result) {
+                    $("#imageUrl").val(result[0].Uri);
+                    form.submit();
+                    return;
+                },
+                error: function(xhr, status, p3) {
+                    alert(xhr.responseText);
+                }
+            });
+        } else {
+            alert("Браузер не поддерживает загрузку файлов HTML5!");
+        }
+        return;
     }
-    return;
+    form.submit();
 });

@@ -30,39 +30,51 @@ namespace BLL.Services
 
         public ProfileEntity GetProfileEntity(int id)
         {
-            return profileRepository.GetById(id)?.ToBllProfile();
+            var profileEntity = profileRepository.GetById(id)?.ToBllProfile();
+            var user = userRepository.GetById(id);
+            if (profileEntity == null) return null;
+            profileEntity.Email = user.Email;
+            profileEntity.Role = user.DalRoles.Select(r => r.Name).ToArray()[0];
+            return profileEntity;
         }
 
         public IEnumerable<ProfileEntity> GetAllProfileEntities()
         {
-            return profileRepository.GetAll().Select(profile => new ProfileEntity()
+            var profiles = profileRepository.GetAll()?.Select(profile => profile.ToBllProfile()).ToArray();
+            if (profiles == null)
+                return null;
+            var users = userRepository.GetAll();
+            for (int i = 0; i < profiles.Length; i++)
             {
-                Id = profile.Id,
-                ImageUrl = profile.ImageUrl,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Age = profile.Age,
-                UserId = profile.UserId
-            });
+                var user = users.SingleOrDefault(u => u.Id == profiles[i].Id);
+                profiles[i].Email = user.Email;
+                profiles[i].Role = user.DalRoles.Select(r => r.Name).ToArray()[0];
+            }
+            return profiles;
         }
 
-        public ProfileEntity GetProfileByUserId(int userId)
+
+        public IEnumerable<ProfileEntity> GetProfileEntitiesByAreas(string term)
         {
-            var profile = profileRepository.GetByPredicate(x => x.UserId == userId);
-            var user = userRepository.GetByPredicate(x => x.Id == userId);
-            var profileEntity = profile?.ToBllProfile();
-            if (profileEntity == null) return null;
-            profileEntity.Email = user.Email;
-            profileEntity.Role = user.DalRoles.Select( r => r.Name).ToArray()[0];
-            return profileEntity;
+            var profiles = profileRepository.GetDalProfilesByAreas(p => p.DalAreas.Where(a => a.Name.StartsWith(term)).Count() != 0).ToProfileEntities().ToArray();
+            for (int i = 0; i < profiles.Length; i++)
+            {
+                var user = userRepository.GetById(profiles[i].Id);
+                profiles[i].Email = user.Email;
+                profiles[i].Role = user.DalRoles.Select(r => r.Name).ToArray()[0];
+            }
+            return profiles;
         }
 
         public void UpdateProfile(ProfileEntity profile)
         {
-            userRepository.AddRoleToUser(roleRepository.GetByPredicate(r => r.Name == profile.Role), userRepository.GetById(profile.UserId));
-            uow.Commit();
-            
-            var dalProfile = profileRepository.GetByPredicate(x => x.UserId == profile.UserId);
+            if (profile.Role != "0")
+            {
+                userRepository.AddRoleToUser(roleRepository.GetByPredicate(r => r.Name == profile.Role),
+                    userRepository.GetById(profile.Id));
+                uow.Commit();
+            }
+            var dalProfile = profileRepository.GetById(profile.Id);
             dalProfile.DalAreas = new HashSet<DalArea>();
             if (profile.Role != "Manager")
             {

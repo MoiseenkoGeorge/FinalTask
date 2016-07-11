@@ -27,7 +27,7 @@ namespace Mvc.Controllers
         [HttpGet]
         public ActionResult Index(int id = 0)
         {
-            var profile = profileService.GetProfileByUserId(id);
+            var profile = profileService.GetProfileEntity(id);
             if (profile == null)
                 return View("Error");
             return View(profile.ToProfileViewModel());
@@ -38,7 +38,7 @@ namespace Mvc.Controllers
         {
             if (id == null)
                 return RedirectToAction("NotFound", "Home");
-            var profile = profileService.GetProfileByUserId(id.Value);
+            var profile = profileService.GetProfileEntity(id.Value);
             if(profile == null)
                 return RedirectToAction("NotFound", "Home");
             if (User.Identity.Name != profile.Email)
@@ -55,6 +55,12 @@ namespace Mvc.Controllers
             return View(profileViewModel);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Manager")]
+        public ActionResult Manage()
+        {
+            return View();
+        }
         [HttpPost]
         public JsonResult Upload()
         {
@@ -86,6 +92,12 @@ namespace Mvc.Controllers
             UploadResultlist.Add(uploadResultImg);
             if (!flag) System.IO.File.Delete(Server.MapPath("~/Files/" + fileName));
             return Json(UploadResultlist, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Search(string term)
+        {
+            if (!Request.IsAjaxRequest())
+                RedirectToAction("NotFound","Home");
+            return Json(profileService.GetProfileEntitiesByAreas(term).ToProfileViewModels(), JsonRequestBehavior.AllowGet);
         }
     }
 }

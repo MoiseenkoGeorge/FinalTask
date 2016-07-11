@@ -1,12 +1,12 @@
 ﻿@model Mvc.Models.ProfileViewModel
 
 <div class="container" style="padding-top: 60px;">
-    <h1 class="page-header">Profile</h1>
+    <h1 class="page-header">User's Profile</h1>
     <div class="row">
         <!-- left column -->
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="text-center">
-                <img src=@Model.ImageUrl class="avatar img-circle img-thumbnail" alt="avatar">
+                <img src=@Model.ImageUrl class="avatar img-circle img-responsive" alt="avatar">
             </div>
         </div>
         <!-- edit form column -->
@@ -28,23 +28,36 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Email:</label>
-                    @Html.DisplayTextFor(m => m.Email)
+                    @Html.DisplayFor(m => m.Email)
                 </div>
                 <div class="form-group">
                     <label class="control-label">Description:</label>
                     <div class="">
-                        <p>@Model.Description</p>
+                        @Html.Bootstrap().TextAreaFor(m => m.Description).Value(@Model.Description).Class("form-control").Readonly(true)
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label ">Skills:</label>
-
-                </div>
+                @if (!User.IsInRole("Manager"))
+                {
+                    <div class="form-group" id="areas-div">
+                        <label class="col-lg-3 control-label">Areas:</label>
+                        <div class="areas col-lg-8 ">
+                            <div class="containr" id="tags-container">
+                                @foreach (var area in @Model.Areas)
+                                {
+                                    <div class="element">
+                                        <span>@area</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
             </form>
         </div>
     </div>
 </div>
+@Styles.Render("~/Content/areas")
 @if (User.Identity.Name == Model.Email)
 {
-    @Html.RouteLink("Edit","Default",new {controller = "Profile", action = "Edit", id = Model.UserId})
+    @Html.RouteLink("Edit","Default",new {controller = "Profile", action = "Edit", id = Model.Id})
 }

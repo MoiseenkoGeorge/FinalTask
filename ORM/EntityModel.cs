@@ -30,9 +30,8 @@ namespace ORM
                 .Map(m => m.ToTable("UserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
 
             modelBuilder.Entity<User>()
-                .HasMany(e => e.Profiles)
-                .WithRequired(e => e.User)
-                .WillCascadeOnDelete(false);
+                .HasOptional(e => e.Profile)
+                .WithRequired(e => e.User);
         }
     }
 }

@@ -8,22 +8,14 @@ using BLL.Services;
 using DAL.Concrete;
 using DAL.Interface.Repository;
 using Mvc.Infrastructure;
+using System.Web;
 
 namespace Mvc.Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
-        private readonly IUserService userService;
+        private IUserService userService => (IUserService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IUserService));
 
-        public CustomRoleProvider(IUserService userService)
-        {
-            this.userService = userService;
-        }
-
-        public CustomRoleProvider():this(System.Web.Mvc.DependencyResolver.Current.GetService<IUserService>())
-        {
-            
-        }
         public override bool IsUserInRole(string email, string roleName)
         {
             var user = userService.GetUserByEmail(email);

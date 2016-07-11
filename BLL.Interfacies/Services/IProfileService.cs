@@ -10,8 +10,7 @@ namespace BLL.Interfacies.Services
         IEnumerable<ProfileEntity> GetAllProfileEntities();
         void CreateProfile(ProfileEntity profile);
         void DeleteProfile(ProfileEntity profile);
-        ProfileEntity GetProfileByUserId(int userId);
-
+        IEnumerable<ProfileEntity> GetProfileEntitiesByAreas(string term); 
         void UpdateProfile(ProfileEntity profile);
     }
 }

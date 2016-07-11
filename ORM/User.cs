@@ -11,7 +11,6 @@ namespace ORM
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            Profiles = new HashSet<Profile>();
             Roles = new HashSet<Role>();
         }
 
@@ -25,8 +24,7 @@ namespace ORM
 
         public bool EmailConfirmed { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profile> Profiles { get; set; }
+        public virtual Profile Profile { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Roles { get; set; }

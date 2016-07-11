@@ -16,7 +16,6 @@ namespace DAL.Interfacies.DTO
         public string LastName { get; set; }
         public string Description { get; set; }
         public DateTime? Age { get; set; }
-        public int UserId { get; set; }
         public IEnumerable<DalArea> DalAreas { get; set; } 
     }
 }

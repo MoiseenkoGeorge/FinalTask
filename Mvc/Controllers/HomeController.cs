@@ -4,9 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BLL.Interface.Services;
+using BLL.Interfacies.Services;
+using BLL.Interfacies.Entities;
 using Mvc.Infrastructure.Mappers;
 using Mvc.Models;
 using Mvc.Providers;
+
 
 namespace Mvc.Controllers
 {
@@ -14,17 +17,17 @@ namespace Mvc.Controllers
     public class HomeController : Controller
     {
 
-        private readonly IUserService service;
         private readonly CustomMembershipProvider provider;
-        public HomeController(IUserService service, CustomMembershipProvider provider)
+        private readonly IProfileService profileService;
+        public HomeController(CustomMembershipProvider provider,IProfileService profileService)
         {
-            this.service = service;
             this.provider = provider;
+            this.profileService = profileService;
         }
 
         public ActionResult Index()
         {
-            return View(provider.GetAllUsers());
+            return View(profileService.GetAllProfileEntities().Select(p => p.ToProfileViewModel()));
         }
 
         public ActionResult About()

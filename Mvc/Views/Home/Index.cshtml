@@ -1,41 +1,10 @@
-﻿@model IEnumerable<Mvc.Models.UserViewModel>
+﻿@model IEnumerable<Mvc.Models.ProfileViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>All users</h2>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Role)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmailConfirmed)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+    @foreach (var item in @Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.EmailConfirmed)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-               <!--Html.ActionLink("Delete", "Delete", new { id = item.Id })-->
-            </td>
-        </tr>
+       @Html.Partial("_ProfileUnit", item)
     }
-</table>

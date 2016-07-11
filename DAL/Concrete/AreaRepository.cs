@@ -20,11 +20,7 @@ namespace DAL.Concrete
         }
         public IEnumerable<DalArea> GetAll()
         {
-            return _context.Set<Area>().Select(area => new DalArea()
-            {
-                Id = area.Id,
-                Name = area.Name 
-            });
+            return _context.Set<Area>().ToDalAreas();
         }
 
         public DalArea GetById(int key)
@@ -34,11 +30,7 @@ namespace DAL.Concrete
 
         public DalArea GetByPredicate(Expression<Func<DalArea, bool>> f)
         {
-            return _context.Set<Area>().Select(area => new DalArea()
-            {
-                Id = area.Id,
-                Name = area.Name
-            }).FirstOrDefault(f);
+            return _context.Set<Area>().ToDalAreas().FirstOrDefault(f);
         }
 
         public void Create(DalArea e)

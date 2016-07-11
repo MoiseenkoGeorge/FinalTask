@@ -16,6 +16,7 @@ namespace Mvc.Models
 
     public class UserViewModel
     {
+        public int Id { get; set; }
         [Display(Name = "User's e-mail")]
         public string Email { get; set; }
         [Display(Name = "User's confirmation of e-mail")]

@@ -44,13 +44,13 @@ namespace BLL.Services
             uow.Commit();
             var dalUser = userRepository.GetByPredicate(x => x.Email == user.Email);
             userRepository.AddRoleToUser(role.ToDalRole(), dalUser);
-            profileRepository.Create(new DalProfile() {UserId = dalUser.Id,ImageUrl = "http://res.cloudinary.com/djb7hr8nk/image/upload/v1466780959/empty_zeehdh.png" });
+            profileRepository.Create(new DalProfile() {Id = dalUser.Id,ImageUrl = "http://res.cloudinary.com/djb7hr8nk/image/upload/v1466780959/empty_zeehdh.png" });
             uow.Commit();
         }
 
         public void DeleteUser(UserEntity user)
         {
-            profileRepository.Delete(profileRepository.GetByPredicate(p => p.UserId == user.Id));
+            profileRepository.Delete(profileRepository.GetById(user.Id));
             userRepository.Delete(user.ToDalUser());
             uow.Commit();
         }

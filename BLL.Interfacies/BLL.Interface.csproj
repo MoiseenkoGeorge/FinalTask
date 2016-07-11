@@ -77,13 +77,13 @@
     <Compile Include="Entities\ProfileEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IProfileService.cs" />
     <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

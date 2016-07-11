@@ -22,20 +22,12 @@ namespace DAL.Concrete
         }
         public IEnumerable<DalRole> GetAll()
         {
-            return _context.Set<Role>().Select(role => new DalRole()
-            {
-                Id = role.Id,
-                Name =  role.Name
-            });
+            return _context.Set<Role>().ToDalRoles();
         }
 
         public DalRole GetByPredicate(Expression<Func<DalRole, bool>> f)
         {
-            return _context.Set<Role>().Select(user => new DalRole()
-            {
-                Id = user.Id,
-                Name = user.Name
-            }).SingleOrDefault(f);
+            return _context.Set<Role>().ToDalRoles().SingleOrDefault(f);
         }
 
         public void Create(DalRole role)

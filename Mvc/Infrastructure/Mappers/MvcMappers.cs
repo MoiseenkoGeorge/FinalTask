@@ -16,7 +16,8 @@ namespace Mvc.Infrastructure.Mappers
             {
                 Email = userEntity.Email,
                 Role = (Role)userEntity.RoleEntities.ToArray()[0].Id,
-                EmailConfirmed = userEntity.EmailConfirmed
+                EmailConfirmed = userEntity.EmailConfirmed,
+                Id = userEntity.Id
             };
         }
 
@@ -40,7 +41,6 @@ namespace Mvc.Infrastructure.Mappers
                 LastName = profileEntity.LastName,
                 Birthday = profileEntity.Age,
                 ImageUrl = profileEntity.ImageUrl,
-                UserId = profileEntity.UserId,
                 Description = profileEntity.Description,
                 Email = profileEntity.Email,
                 Areas = profileEntity.AreaEntities,
@@ -58,12 +58,15 @@ namespace Mvc.Infrastructure.Mappers
                 LastName = profile.LastName,
                 Age = profile.Birthday,
                 Description = profile.Description,
-                UserId = profile.UserId,
                 AreaEntities = profile.Areas?.ToArray()[0].Split(';'),
                 Email = profile.Email,
                 Id = profile.Id,
                 Role = profile.Role.ToString()
             };
+        }
+        public static IEnumerable<ProfileViewModel> ToProfileViewModels(this IEnumerable<ProfileEntity> profileEntities)
+        {
+            return profileEntities.Select(x => x.ToProfileViewModel());
         }
     }
 }

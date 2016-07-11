@@ -12,7 +12,7 @@
                 <div class="text-center">
                     <img src=@Model.ImageUrl id="Avatar" class="avatar img-circle img-thumbnail" alt="avatar">
                     <h6>Upload a different photo...</h6>
-                    <input type="file" id="uploadFileBtn" class="text-center center-block well well-sm">
+                    <input type="file" id="uploadFileBtn" class="text-center center-block well well-sm" lang="eng">
                 </div>
             </div>
             <!-- edit form column -->
@@ -32,30 +32,27 @@
                             @Html.Bootstrap().TextBoxFor(m => m.LastName).Value(@Model.FirstName).Class("form-control")
                         </div>
                     </div>
-                    @if (!@User.IsInRole("Programmist") && !@User.IsInRole("Manager"))
-                    {
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">Role:</label>
-                            <div class="col-lg-8">
-
-                                {
-                                @Html.DropDownListFor(m => m.Role, new SelectList(Enum.GetNames(typeof(Role)).Where(x => x != "Administrator" && x != "User")), new { id = "role", @class = "form-control" })
-                                }
-                                else
-                                {
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Role:</label>
+                        <div class="col-lg-8">
+                            @if (!@User.IsInRole("Programmist") && !@User.IsInRole("Manager"))
+                            {
+                                @Html.DropDownListFor(m => m.Role, new SelectList(Enum.GetNames(typeof(Role)).Where( x => x !="Administrator" && x!="User")),new {id = "role", @class = "form-control"})
+                            }
+                            else
+                            {
                                 if (@User.IsInRole("Programmist"))
-                                {
-                                @Html.DisplayText("Programmist");
+                                { 
+                                    @Html.TextBox("Programmist","Programmist",new {@readonly = true,@class = "form-control"})
                                 }
                                 else
                                 {
-                                @Html.DisplayText("Manager");
+                                   @Html.TextBox("Manager", "Manager", new { @readonly = true, @class = "form-control" })
                                 }
-                                }
-
-                            </div>
+                            }
+                           
                         </div>
-                    }
+                    </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Birthday:</label>
                         <div class="col-lg-8">
@@ -104,6 +101,7 @@
 @Scripts.Render("~/bundles/ProfileEdit")
 @Styles.Render("~/Content/areas")
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+
 
 

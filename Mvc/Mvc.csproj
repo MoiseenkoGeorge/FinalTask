@@ -233,8 +233,41 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Search.css" />
+    <Content Include="Content\Themes\base\accordion.css" />
+    <Content Include="Content\Themes\base\all.css" />
+    <Content Include="Content\Themes\base\autocomplete.css" />
+    <Content Include="Content\Themes\base\base.css" />
+    <Content Include="Content\Themes\base\button.css" />
+    <Content Include="Content\Themes\base\core.css" />
+    <Content Include="Content\Themes\base\datepicker.css" />
+    <Content Include="Content\Themes\base\dialog.css" />
+    <Content Include="Content\Themes\base\draggable.css" />
+    <Content Include="Content\Themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\Themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\Themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\Themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\Themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\Themes\base\menu.css" />
+    <Content Include="Content\Themes\base\progressbar.css" />
+    <Content Include="Content\Themes\base\resizable.css" />
+    <Content Include="Content\Themes\base\selectable.css" />
+    <Content Include="Content\Themes\base\selectmenu.css" />
     <Content Include="Content\Themes\base\skills.css" />
+    <Content Include="Content\Themes\base\slider.css" />
+    <Content Include="Content\Themes\base\sortable.css" />
+    <Content Include="Content\Themes\base\spinner.css" />
+    <Content Include="Content\Themes\base\tabs.css" />
     <Content Include="Content\Themes\base\theme.css" />
+    <Content Include="Content\Themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -330,6 +363,8 @@
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -341,6 +376,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Search.js" />
     <Content Include="Scripts\TwitterBootstrapMvcJs.js" />
     <Content Include="Scripts\UploadAvatar.js" />
     <Content Include="Scripts\_references.js" />
@@ -360,7 +396,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_ProfileUnit.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
@@ -369,6 +404,7 @@
     <Content Include="Views\User\DisplayEmail.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Profile\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />

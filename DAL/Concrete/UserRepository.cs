@@ -23,18 +23,7 @@ namespace DAL.Concrete
 
         public IEnumerable<DalUser> GetAll()
         {
-            return _context.Set<User>().Select(user => new DalUser()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed,
-                Password = user.Password,
-                DalRoles = user.Roles.Select(role => new DalRole()
-                {
-                    Id = role.Id,
-                    Name = role.Name
-                })
-            });
+            return _context.Set<User>().ToDalUsers();
         }
 
         public DalUser GetById(int key)
@@ -45,18 +34,7 @@ namespace DAL.Concrete
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> f)
         {
             //Expression<Func<DalUser, bool>> -> Expression<Func<User, bool>> (!)
-            return _context.Set<User>().Select(user => new DalUser()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed,
-                Password = user.Password,
-                DalRoles = user.Roles.Select(role => new DalRole()
-                {
-                    Id = role.Id,
-                    Name = role.Name
-                })
-            }).SingleOrDefault(f);
+            return _context.Set<User>().ToDalUsers().SingleOrDefault(f);
         }
 
         public void Create(DalUser e)

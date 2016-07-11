@@ -14,6 +14,7 @@ namespace ORM
             Areas = new HashSet<Area>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         public string ImageUrl { get; set; }
@@ -27,8 +28,6 @@ namespace ORM
         public string Description { get; set; }
 
         public DateTime? Age { get; set; }
-
-        public int UserId { get; set; }
 
         public virtual User User { get; set; }
 

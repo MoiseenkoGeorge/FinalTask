@@ -11,5 +11,6 @@ namespace DAL.Interface.Repository
     public interface IProfileRepository : IRepository<DalProfile>
     {
         void AddAreaToProfile(DalProfile dalProfile, DalArea dalArea);
+        IEnumerable<DalProfile> GetDalProfilesByAreas(Expression<Func<DalProfile, bool>> func);
     }
 }

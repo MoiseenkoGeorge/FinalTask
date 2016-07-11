@@ -23,15 +23,7 @@ namespace DAL.Concrete
         }
         public IEnumerable<DalProfile> GetAll()
         {
-            return _context.Set<Profile>().Select(profile => new DalProfile()
-            {
-                Id = profile.Id,
-                Age = profile.Age,
-                ImageUrl = profile.ImageUrl,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                UserId = profile.UserId
-            });
+            return _context.Set<Profile>().ToDalProfiles();
         }
 
         public DalProfile GetById(int key)
@@ -41,21 +33,7 @@ namespace DAL.Concrete
 
         public DalProfile GetByPredicate(Expression<Func<DalProfile, bool>> f)
         {
-            return _context.Set<Profile>().Select(profile => new DalProfile()
-            {
-                Id = profile.Id,
-                Age = profile.Age,
-                ImageUrl = profile.ImageUrl,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                UserId = profile.UserId,
-                Description = profile.Description,
-                DalAreas = profile.Areas.Select(area => new DalArea()
-                {
-                    Id = area.Id,
-                    Name = area.Name
-                })
-            }).SingleOrDefault(f);
+            return _context.Set<Profile>().ToDalProfiles().SingleOrDefault(f);
         }
 
         public void Create(DalProfile e)
@@ -74,7 +52,7 @@ namespace DAL.Concrete
         {
             var profile = entity.ToProfile();
 
-            var localUser = _context.Set<Profile>().Local.FirstOrDefault(u => u.UserId == profile.UserId);
+            var localUser = _context.Set<Profile>().Local.FirstOrDefault(u => u.Id == profile.Id);
             if (localUser != null)
             {
                 _context.Entry(localUser).CurrentValues.SetValues(profile);
@@ -101,6 +79,11 @@ namespace DAL.Concrete
 
             _context.Entry(profile).Collection(x => x.Areas).Load();
             profile.Areas.Add(area);
+        }
+
+        public IEnumerable<DalProfile> GetDalProfilesByAreas(Expression<Func<DalProfile, bool>> func)
+        {
+            return _context.Set<Profile>().ToDalProfiles().Where(func).OrderBy(x => x.Id);
         }
     }
 }

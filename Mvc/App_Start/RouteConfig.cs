@@ -20,6 +20,16 @@ namespace Mvc
                 defaults: new { controller = "Profile", action = "Upload"}
                 );
             routes.MapRoute(
+                name: "SearchProfile",
+                url: "Profile/Search",
+                defaults: new { controller = "Profile", action = "Search" }
+                );
+            routes.MapRoute(
+               name: "Manage",
+               url: "Profile/Manage",
+               defaults: new { controller = "Profile", action = "Manage" }
+               );
+            routes.MapRoute(
                 name: "Profile",
                 url: "Profile/{id}",
                 defaults: new { controller = "Profile", action = "Index", id = UrlParameter.Optional });

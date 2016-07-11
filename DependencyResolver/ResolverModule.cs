@@ -42,6 +42,7 @@ namespace DependencyResolver
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
             kernel.Bind<IProfileService>().To<ProfileService>();
+            kernel.Bind<IEmailService>().To<EmailService>();
         }
     }
 }

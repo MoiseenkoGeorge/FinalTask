@@ -19,10 +19,12 @@ namespace Mvc.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
+        private readonly IEmailService emailService;
         private readonly CustomMembershipProvider provider;
-        public UserController(IUserService service, CustomMembershipProvider provider)
+        public UserController(IUserService service, CustomMembershipProvider provider,IEmailService emailService)
         {
             this.userService = service;
+            this.emailService = emailService;
             this.provider = provider;
         }
 
@@ -46,28 +48,12 @@ namespace Mvc.Controllers
                 var membershipUser = provider.CreateUser(registerViewModel);
                 if (membershipUser != null)
                 {
-                    MailAddress from = new MailAddress("FinalTask@mail.ru", "Web Registration");
-                    MailAddress to = new MailAddress(membershipUser.Email);
-                    MailMessage m = new MailMessage(from, to)
-                    {
-                        Subject = "Email confirmation",
-                        Body = string.Format("To complete the registration please go to the link:" +
-                                             "<a href=\"{0}\" title=\"Confirm registration\">{0}</a>",
-                        Url.Action("ConfirmEmail", "User",
-                                new {token = membershipUser.UserName, email = membershipUser.Email}, Request.Url.Scheme)),
-                        IsBodyHtml = true
-                    };
-                    SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.mail.ru", 25)
-                    {
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new System.Net.NetworkCredential("FinalTask@mail.ru", "5501mk123"),
-                        EnableSsl = true,
-                        Timeout = 5000
-                    };
                     try
                     {
-                        smtp.Send(m);
+                        emailService.SendConfirmationToEmail(membershipUser.Email, string.Format("To complete the registration please go to the link:" +
+                                             "<a href=\"{0}\" title=\"Confirm registration\">{0}</a>",
+                        Url.Action("ConfirmEmail", "User",
+                                new { token = membershipUser.UserName, email = membershipUser.Email }, Request.Url.Scheme)));
                     }
                     catch (Exception e)
                     {
@@ -139,7 +125,7 @@ namespace Mvc.Controllers
         //(Double Submit Problem)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Manager")]
         public ActionResult DeleteConfirmed(UserEntity user)
         {
             provider.DeleteUser(user.Id,true);

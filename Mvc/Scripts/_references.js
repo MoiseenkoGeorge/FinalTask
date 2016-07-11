@@ -13,6 +13,5 @@
 /// <reference path="moment.min.js" />
 /// <reference path="moment-with-locales.min.js" />
 /// <reference path="respond.js" />
-/// <reference path="search.js" />
 /// <reference path="twitterbootstrapmvcjs.js" />
 /// <reference path="uploadavatar.js" />

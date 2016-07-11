@@ -11,16 +11,16 @@ namespace Mvc.Models
         public string Email { get; set; }
         public string ImageUrl { get; set; }
         [Display(Name = "FirstName")]
-        [DisplayFormat(NullDisplayText = "null")]
+        [DisplayFormat(NullDisplayText = " <empty>")]
         public string FirstName { get; set; }
         [Display(Name = "LastName")]
-        [DisplayFormat(NullDisplayText = "null")]
+        [DisplayFormat(NullDisplayText = " <empty>")]
         public string LastName { get; set; }
         [Display(Name = "Description")]
-        [DisplayFormat(NullDisplayText = "null")]
+        [DisplayFormat(NullDisplayText = " <empty>")]
         public string Description { get; set; }
         [Display(Name = "Birthday")]
-        [DisplayFormat(NullDisplayText = "null")]
+        [DisplayFormat(NullDisplayText = " <empty>")]
         public DateTime? Birthday { get; set; }
         public IEnumerable<string> Areas { get; set; }
         public Role Role { get; set; }

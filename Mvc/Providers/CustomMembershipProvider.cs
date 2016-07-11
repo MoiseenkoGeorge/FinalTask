@@ -25,7 +25,7 @@ namespace Mvc.Providers
             {
                 return null;
             }
-
+            registerViewModel.Password = Crypto.HashPassword(registerViewModel.Password);
             userService.CreateUser(registerViewModel.ToBllUser());
             membershipUser = GetUser(registerViewModel.Email, false);
             return membershipUser;

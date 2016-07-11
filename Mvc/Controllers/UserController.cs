@@ -109,7 +109,7 @@ namespace Mvc.Controllers
 
         //GET-запрос к методу Delete несет потенциальную уязвимость!
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id = 0)
         {
             UserEntity user = userService.GetUserEntity(id);
@@ -125,7 +125,7 @@ namespace Mvc.Controllers
         //(Double Submit Problem)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(UserEntity user)
         {
             provider.DeleteUser(user.Id,true);

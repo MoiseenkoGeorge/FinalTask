@@ -5,7 +5,6 @@ using BLL.Interface.Entities;
 using BLL.Interface.Services;
 using BLL.Mappers;
 using DAL.Interface.Repository;
-using System.Web.Helpers;
 using System;
 using DAL.Interfacies.DTO;
 
@@ -39,7 +38,6 @@ namespace BLL.Services
         {
             var role = roleRepository.GetById(user.RoleEntities.ToList()[0].Id).ToBllRole();
             user.RoleEntities = new HashSet<RoleEntity>();
-            user.Password = Crypto.HashPassword(user.Password);
             userRepository.Create(user.ToDalUser());
             uow.Commit();
             var dalUser = userRepository.GetByPredicate(x => x.Email == user.Email);

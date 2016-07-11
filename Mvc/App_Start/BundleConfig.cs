@@ -9,8 +9,8 @@ namespace Mvc
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-ui-{version}.min.js",
-                        "~/Scripts/jquery-{version}.min.js"));
+                        "~/Scripts/jquery-{version}.min.js",
+                        "~/Scripts/jquery-ui-{version}.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -36,6 +36,8 @@ namespace Mvc
 
             bundles.Add(new StyleBundle("~/Content/areas").Include(
                 "~/Content/Areas.css"));
+
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

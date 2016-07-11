@@ -1,5 +1,5 @@
 ﻿@*User.Identity.IsAuthenticated*@
-@if (Request.IsAuthenticated)
+@if (User.Identity.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
@@ -10,11 +10,22 @@
             {
                 <li>@Html.ActionLink("Edit Profile", "ProfileEdit", "Home")</li>
             }*@
-            
-            <li>
-                @Html.ActionLink("Hello, " + User.Identity.Name + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        @Html.ActionLink("My Profile", "Index", "Profile", new { id = Int32.Parse(Membership.GetUser(User.Identity.Name).UserName) },null )
+                    </li>
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <li>
+                            @Html.ActionLink("Manage", "Manage", "Profile")
+                        </li>
+                    }
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
     }
 }
